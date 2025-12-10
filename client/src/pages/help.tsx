@@ -1,0 +1,283 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { 
+  BookOpen, 
+  Home, 
+  Table2, 
+  Edit3, 
+  Route, 
+  Map, 
+  Image, 
+  Truck, 
+  Share2,
+  Lightbulb,
+  Play,
+  Keyboard,
+  AlertCircle,
+  Database
+} from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+
+export default function HelpPage() {
+  return (
+    <div className="min-h-screen w-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
+              <BookOpen className="h-6 w-6 text-blue-400" />
+            </div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+              User Guide
+            </h1>
+          </div>
+          <Link href="/">
+            <Button variant="outline" size="sm" className="gap-2">
+              <Home className="h-4 w-4" />
+              Back
+            </Button>
+          </Link>
+        </div>
+
+        <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="text-slate-100 flex items-center gap-2">
+              <Database className="h-5 w-5 text-blue-400" />
+              Welcome to the Route Management System
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ScrollArea className="h-[calc(100vh-250px)] pr-4">
+              <div className="space-y-6 text-slate-300 leading-relaxed text-sm">
+                
+                <section>
+                  <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
+                    <BookOpen className="h-4 w-4 text-blue-400" />
+                    What is This App?
+                  </h2>
+                  <p className="text-sm">
+                    This is a comprehensive delivery route management system designed to help you efficiently manage 
+                    delivery location data. You can organize, edit, and optimize delivery routes with ease using an 
+                    interactive drag-and-drop interface. The system is built to streamline your logistics operations 
+                    and improve delivery efficiency.
+                  </p>
+                </section>
+
+                <section>
+                  <h2 className="text-lg font-semibold text-slate-100 mb-3">Key Features</h2>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
+                        <Table2 className="h-4 w-4" />
+                        1. Table Management
+                      </h3>
+                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                        <li>Add, edit, and delete location data rows</li>
+                        <li>Drag-and-drop to reorder entries</li>
+                        <li>Show/hide columns based on your needs</li>
+                        <li>Search and filter to quickly find data</li>
+                        <li>Real-time calculations and statistics</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
+                        <Edit3 className="h-4 w-4" />
+                        2. Edit Mode
+                      </h3>
+                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                        <li>Click the menu button (☰) and select "Enter Edit Mode"</li>
+                        <li>Add, modify, or delete data while in edit mode</li>
+                        <li>Drag-and-drop to rearrange columns</li>
+                        <li>Customize marker colors for map visualization</li>
+                        <li>Click "Exit Edit Mode" when finished</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
+                        <Route className="h-4 w-4" />
+                        3. Route Optimization
+                      </h3>
+                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                        <li>Click "Optimize Route" to calculate optimal delivery sequences</li>
+                        <li>System automatically calculates distances and arranges the shortest routes</li>
+                        <li>Supports Heavy Goods Vehicle (HGV/Lorry) routing profiles</li>
+                        <li>View distances in kilometers from your base location (QL Kitchen)</li>
+                        <li>Batch processing with intelligent rate limiting</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
+                        <Map className="h-4 w-4" />
+                        4. Map View
+                      </h3>
+                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                        <li>Click the info icon (ⓘ) to view locations on the map</li>
+                        <li>Marker colors can be customized in edit mode</li>
+                        <li>Fullscreen map view for better visualization</li>
+                        <li>Automatic route calculation from base location</li>
+                        <li>Interactive markers with location details</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
+                        <Image className="h-4 w-4" />
+                        5. Image Gallery
+                      </h3>
+                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                        <li>Upload images for each location</li>
+                        <li>Support for multiple images per location</li>
+                        <li>Lightbox view to see images in full size</li>
+                        <li>Upload from your device or enter image URLs</li>
+                        <li>Support for various image formats and large files</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
+                        <Truck className="h-4 w-4" />
+                        6. Delivery Alternate System
+                      </h3>
+                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                        <li>4 delivery states: Normal, Alt 1, Alt 2, Inactive</li>
+                        <li>Alt 1: Deliveries on Monday/Wednesday/Friday/Sunday</li>
+                        <li>Alt 2: Deliveries on Tuesday/Thursday/Saturday</li>
+                        <li>Automatic sorting based on current day</li>
+                        <li>Color-coded visual indicators for each state</li>
+                        <li>Off-schedule entries displayed with reduced brightness</li>
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
+                        <Share2 className="h-4 w-4" />
+                        7. Share Table
+                      </h3>
+                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                        <li>Click "Share Table" to generate a shareable link</li>
+                        <li>Save links with custom names for easy reference</li>
+                        <li>Share links with team members for view-only access</li>
+                        <li>Access saved links from the menu</li>
+                        <li>Shared tables maintain your current filters and column visibility</li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+
+                <section>
+                  <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
+                    <Lightbulb className="h-4 w-4 text-yellow-400" />
+                    Usage Tips
+                  </h2>
+                  <ul className="list-disc list-inside space-y-2 ml-4 text-sm">
+                    <li>
+                      <span className="font-semibold">Default Columns:</span> By default, only 4 columns 
+                      are displayed (No, Code, Location, Delivery). Use "Show/Hide Columns" to 
+                      toggle additional columns.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Drag Handle:</span> Use the drag icon (⋮⋮) on the left 
+                      side of each row to drag-and-drop and reorder entries.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Search:</span> Use the search box to quickly find data. 
+                      Search works across all visible columns.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Filters:</span> Filter by Route or Delivery status 
+                      using the dropdown filters for focused views.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Calculations:</span> The "Totals" row at the bottom 
+                      automatically calculates sum/count based on visible data (after filters/search).
+                    </li>
+                    <li>
+                      <span className="font-semibold">Inactive Rows:</span> Toggle the active/inactive state 
+                      to temporarily hide locations. Inactive rows automatically sort to the bottom.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Header Content:</span> Slide left/right to view 
+                      different header pages if multiple pages are configured.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Layout Preferences:</span> Your column visibility and order 
+                      preferences are saved per user and persist across sessions.
+                    </li>
+                  </ul>
+                </section>
+
+                <section>
+                  <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
+                    <Play className="h-4 w-4 text-green-400" />
+                    Getting Started
+                  </h2>
+                  <ol className="list-decimal list-inside space-y-2 ml-4 text-sm">
+                    <li>Browse the existing table data to familiarize yourself with the interface</li>
+                    <li>Use search and filters to explore the data</li>
+                    <li>Click the menu button (☰) to access additional options</li>
+                    <li>Enter Edit Mode to make changes to the data</li>
+                    <li>Try drag-and-drop to reorder rows and customize your view</li>
+                    <li>Click the info icon (ⓘ) to view locations on the map</li>
+                    <li>Use "Optimize Route" to calculate efficient delivery sequences</li>
+                    <li>Exit Edit Mode when you're done making changes</li>
+                  </ol>
+                </section>
+
+                <section>
+                  <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
+                    <Keyboard className="h-4 w-4 text-purple-400" />
+                    Keyboard Shortcuts
+                  </h2>
+                  <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                    <li><kbd className="px-2 py-1 text-xs bg-slate-800 rounded border border-slate-700">Esc</kbd> - Close modal/dialog windows</li>
+                    <li><kbd className="px-2 py-1 text-xs bg-slate-800 rounded border border-slate-700">Enter</kbd> - Submit forms and confirm actions</li>
+                  </ul>
+                </section>
+
+                <section className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
+                  <h2 className="text-lg font-semibold text-blue-400 mb-2 flex items-center gap-2">
+                    <AlertCircle className="h-4 w-4" />
+                    Important Notes
+                  </h2>
+                  <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                    <li><span className="font-semibold">Route Optimization:</span> Uses OpenRouteService API for commercial vehicle routing</li>
+                    <li><span className="font-semibold">Toll Information:</span> Toll prices are not available and will display as 0</li>
+                    <li><span className="font-semibold">Rate Limits:</span> Free tier allows 40 requests per minute, 2000 requests per day</li>
+                    <li><span className="font-semibold">Batch Processing:</span> For routes with many locations, the system processes requests sequentially to respect rate limits</li>
+                    <li><span className="font-semibold">Data Privacy:</span> Your layout preferences and settings are stored locally per user</li>
+                  </ul>
+                </section>
+
+                <section className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
+                  <h2 className="text-lg font-semibold text-green-400 mb-2">Best Practices</h2>
+                  <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
+                    <li>Regularly save your work using the "Save Layout" option</li>
+                    <li>Use descriptive names when saving share links for easy identification</li>
+                    <li>Keep location coordinates accurate for optimal route calculations</li>
+                    <li>Use the delivery alternate system to organize regular delivery schedules</li>
+                    <li>Take advantage of filters to focus on specific routes or delivery types</li>
+                  </ul>
+                </section>
+
+                <section>
+                  <p className="text-center text-slate-400 italic mt-8 text-sm">
+                    For technical support or questions, please contact your system administrator.
+                  </p>
+                  <p className="text-center text-slate-500 text-xs mt-4">
+                    Route Management System • Version 1.0.0
+                  </p>
+                </section>
+
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
