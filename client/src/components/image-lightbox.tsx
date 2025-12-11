@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MediaWithCaption } from "@shared/schema";
+import { Loader2 } from "lucide-react";
 
 interface ImageLightboxProps {
   images: MediaWithCaption[];
@@ -9,6 +10,8 @@ interface ImageLightboxProps {
 export function ImageLightbox({ images, rowId }: ImageLightboxProps) {
   const galleryRef = useRef<any>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     let gallery: any = null;
@@ -79,17 +82,30 @@ export function ImageLightbox({ images, rowId }: ImageLightboxProps) {
 
   return (
     <div ref={containerRef} className="flex items-center justify-center gap-2">
-      {/* First image as clickable preview */}
+      {/* First image as clickable preview with loading state */}
       <a
         href={images[0].url}
         data-src={images[0].url}
         data-sub-html={getSubHtml(images[0], 0)}
-        className="lightbox-item cursor-pointer"
+        className="lightbox-item cursor-pointer relative"
       >
+        {!imageLoaded && !imageError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded">
+            <Loader2 className="w-4 h-4 animate-spin text-primary" />
+          </div>
+        )}
         <img
           src={images[0].url}
           alt={images[0].caption || "Image"}
-          className="w-10 h-8 object-cover rounded border border-gray-200 dark:border-gray-700 hover:opacity-80 transition-opacity"
+          className={`w-10 h-8 object-cover rounded border border-gray-200 dark:border-gray-700 hover:opacity-80 transition-all duration-300 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          loading="lazy"
+          onLoad={() => setImageLoaded(true)}
+          onError={() => {
+            setImageError(true);
+            setImageLoaded(true);
+          }}
         />
       </a>
 
