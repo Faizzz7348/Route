@@ -1,33 +1,10 @@
-import "dotenv/config";
-import express from "express";
-import { registerRoutes } from "../dist/routes.js";
+import { createApp } from '../dist/app.js';
 
-const app = express();
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: false, limit: '50mb' }));
+let app;
 
-// Health check
-app.get('/health', (_req, res) => {
-  res.status(200).json({ 
-    status: 'ok', 
-    timestamp: new Date().toISOString()
-  });
-});
-
-// CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  
-  if (req.method === 'OPTIONS') {
-    res.sendStatus(200);
-  } else {
-    next();
+export default async function handler(req, res) {
+  if (!app) {
+    app = await createApp();
   }
-});
-
-// Register API routes only
-await registerRoutes(app);
-
-export default app;
+  return app(req, res);
+}
