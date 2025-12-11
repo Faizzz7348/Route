@@ -31,7 +31,6 @@ import { calculateDistance } from "@/utils/distance";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { getUserId } from "@/lib/utils";
-import { useAppLoading } from "@/hooks/use-app-loading";
 
 interface DescriptionItem {
   term: string;
@@ -75,13 +74,11 @@ export default function TablePage() {
   const [showDeletePageConfirmation, setShowDeletePageConfirmation] = useState(false);
   const [pageToDelete, setPageToDelete] = useState<Page | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
-  const [showIntroLoading, setShowIntroLoading] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
   const { theme, toggleTheme} = useTheme();
-  const { shouldShowIntro, updateLastActiveTime, markIntroAsSeen } = useAppLoading();
   
   const {
     rows,
@@ -983,51 +980,7 @@ export default function TablePage() {
   };
 
 
-  // Enhanced loading state - show intro only on first load or after 1 hour inactivity
-  const [minLoadingComplete, setMinLoadingComplete] = React.useState(false);
-
-  React.useEffect(() => {
-    const shouldShowIntroScreen = shouldShowIntro();
-    
-    if (shouldShowIntroScreen) {
-      // Show intro loading for 5 seconds on first load or after 1 hour
-      const timer = setTimeout(() => {
-        setMinLoadingComplete(true);
-        markIntroAsSeen();
-      }, 5000);
-      return () => clearTimeout(timer);
-    } else {
-      // Skip intro loading, show immediately
-      setMinLoadingComplete(true);
-      updateLastActiveTime();
-    }
-  }, []);
-
-  // Update last active time on user interaction
-  React.useEffect(() => {
-    const handleActivity = () => updateLastActiveTime();
-    
-    window.addEventListener('click', handleActivity);
-    window.addEventListener('keydown', handleActivity);
-    window.addEventListener('scroll', handleActivity);
-    
-    return () => {
-      window.removeEventListener('click', handleActivity);
-      window.removeEventListener('keydown', handleActivity);
-      window.removeEventListener('scroll', handleActivity);
-    };
-  }, []);
-
-  // Show intro loading only when needed
-  if (!minLoadingComplete) {
-    return (
-      <div className="min-h-screen relative">
-        <LoadingOverlay message="Welcome back! Loading your data..." type="wave" />
-      </div>
-    );
-  }
-
-  // Show simple spinner for data loading after intro
+  // Show simple spinner for data loading
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">

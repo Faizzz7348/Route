@@ -12,7 +12,7 @@ interface ColumnHeaderProps {
 
 export function ColumnHeader({ column, dragHandleProps, onDelete, isAuthenticated = false, editMode = false }: ColumnHeaderProps) {
   // Core columns that cannot be deleted (based on dataKey)
-  const coreColumnDataKeys = ['id', 'no', 'route', 'code', 'location', 'delivery', 'tngRoute', 'info', 'images', 'kilometer', 'tollPrice'];
+  const coreColumnDataKeys = ['id', 'no', 'route', 'code', 'location', 'delivery', 'tngRoute', 'info', 'images', 'tollPrice'];
   const isCoreColumn = coreColumnDataKeys.includes(column.dataKey);
   
   return (

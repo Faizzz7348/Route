@@ -823,35 +823,21 @@ export function DataTable({
             <PopoverTrigger asChild>
               <Button 
                 variant="outline" 
-                className="h-6 px-2 pagination-button text-xs justify-start"
+                className="h-8 w-8 p-0 pagination-button rounded-lg data-[state=open]:bg-gray-700 dark:data-[state=open]:bg-gray-800 dark:hover:shadow-lg dark:hover:shadow-blue-500/30 transition-all duration-300"
                 data-testid="sort-trigger"
+                title={sortState ? `Sorted by ${sortState.column === 'route' ? 'Route' : sortState.column === 'code' ? 'Code' : sortState.column === 'location' ? 'Location' : sortState.column === 'delivery' ? 'Delivery' : 'No'} (${sortState.direction === 'asc' ? 'ascending' : 'descending'})` : 'Sort table'}
               >
-                {sortState && (
-                  <>
-                    {sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3 mr-1" /> : <ArrowDown className="w-3 h-3 mr-1" />}
-                    <span className="hidden sm:inline">
-                      {sortState.column === 'route' && 'Route'}
-                      {sortState.column === 'code' && 'Code'}
-                      {sortState.column === 'location' && 'Location'}
-                      {sortState.column === 'delivery' && 'Delivery'}
-                      {sortState.column === 'kilometer' && 'Km'}
-                      {sortState.column === 'order' && 'No'}
-                    </span>
-                    <span className="sm:hidden">Sort</span>
-                  </>
-                )}
-                {!sortState && (
-                  <>
-                    <ArrowUpDown className="w-3 h-3 mr-1 opacity-50" />
-                    <span>Sort</span>
-                  </>
+                {sortState ? (
+                  sortState.direction === 'asc' ? <ArrowUp className="w-4 h-4 text-gray-100 group-data-[state=open]:text-gray-400" /> : <ArrowDown className="w-4 h-4 text-gray-100 group-data-[state=open]:text-gray-400" />
+                ) : (
+                  <ArrowUpDown className="w-4 h-4 opacity-50 text-gray-100 group-data-[state=open]:text-gray-400" />
                 )}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-52 p-0" align="start">
-              <div className="p-3 btn-glass">
-                <h4 className="font-medium text-sm mb-3 pb-2 border-b border-border/20 flex items-center gap-2">
-                  <ArrowUpDown className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400" />
+              <div className="p-3 bg-slate-100 dark:bg-transparent rounded-lg border border-slate-200 dark:border-border/20">
+                <h4 className="font-medium text-sm mb-3 pb-2 border-b border-slate-300 dark:border-border/20 flex items-center gap-2">
+                  <ArrowUpDown className="w-3.5 h-3.5 text-gray-400 dark:text-blue-400" />
                   Sort By
                 </h4>
                 <div className="space-y-1.5 text-sm">
@@ -915,21 +901,6 @@ export function DataTable({
                     )}
                     {sortState?.column !== 'delivery' && <ArrowUpDown className="w-3 h-3 opacity-30" />}
                   </Button>
-                  <Button
-                    variant={sortState?.column === 'kilometer' ? 'default' : 'ghost'}
-                    size="sm"
-                    className={`w-full justify-between text-xs ${
-                      sortState?.column === 'kilometer' ? 'bg-blue-500 hover:bg-blue-600 text-white' : ''
-                    }`}
-                    onClick={() => handleSortToggle('kilometer')}
-                    data-testid="button-sort-kilometer"
-                  >
-                    <span>Kilometer</span>
-                    {sortState?.column === 'kilometer' && (
-                      sortState.direction === 'asc' ? <ArrowUp className="w-3 h-3" /> : <ArrowDown className="w-3 h-3" />
-                    )}
-                    {sortState?.column !== 'kilometer' && <ArrowUpDown className="w-3 h-3 opacity-30" />}
-                  </Button>
                   {isFiltered && (
                     <Button
                       variant={sortState?.column === 'order' ? 'default' : 'ghost'}
@@ -953,41 +924,32 @@ export function DataTable({
           </Popover>
           
           {/* Combined Filter Section */}
-          <div className="w-auto">
+          <div className="w-auto relative group">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="h-6 px-2 pagination-button text-xs justify-start" data-testid="combined-filter-trigger">
-                  <span className="hidden sm:inline">
-                    {isSharedView ? (
-                      deliveryFilterValue.length === 0 
-                        ? "🔍 Hide Deliveries" 
-                        : `🚫 ${deliveryFilterValue.length} hidden`
-                    ) : (
-                      filterValue.length === 0 && deliveryFilterValue.length === 0 
-                        ? "🔍 Filters" 
-                        : `📍 ${filterValue.length} • 🚫 ${deliveryFilterValue.length}`
-                    )}
-                  </span>
-                  <span className="sm:hidden">
-                    {isSharedView ? (
-                      deliveryFilterValue.length === 0 ? "🔍" : `🚫${deliveryFilterValue.length}`
-                    ) : (
-                      filterValue.length === 0 && deliveryFilterValue.length === 0 
-                        ? "🔍" 
-                        : `📍${filterValue.length} 🚫${deliveryFilterValue.length}`
-                    )}
-                  </span>
+                <Button 
+                  variant="outline" 
+                  className="h-8 w-8 p-0 pagination-button rounded-lg relative data-[state=open]:bg-gray-700 dark:data-[state=open]:bg-gray-800" 
+                  data-testid="combined-filter-trigger"
+                  title={isSharedView ? `Hide deliveries (${deliveryFilterValue.length} hidden)` : `Filter table (${filterValue.length + deliveryFilterValue.length} active)`}
+                >
+                  <Filter className="w-4 h-4 text-gray-100 group-data-[state=open]:text-gray-400" />
                 </Button>
               </PopoverTrigger>
-            <PopoverContent className="w-64 p-0" align="start">
-              <div className="space-y-4 p-4 text-sm btn-glass">
+              {(filterValue.length > 0 || deliveryFilterValue.length > 0) && (
+                <span className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 bg-red-500 dark:bg-red-400 rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center text-white text-[9px] font-bold border-2 border-white dark:border-gray-900 z-[100] pointer-events-none">
+                  {filterValue.length + deliveryFilterValue.length}
+                </span>
+              )}
+              <PopoverContent className="w-64 p-0" align="start">
+              <div className="p-3 bg-slate-100 dark:bg-transparent rounded-lg border border-slate-200 dark:border-border/20">
                 {/* Routes Section - Hidden in shared view */}
                 {!isSharedView && (
                   <>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
+                    <div className="space-y-1.5 text-sm">
+                      <div className="flex items-center justify-between mb-2">
                         <h4 className="font-medium text-sm flex items-center gap-2">
-                          <MapPin className="w-3 h-3 text-accent" />
+                          <MapPin className="w-3 h-3 text-gray-400 dark:text-accent" />
                           Routes ({filterValue.length} selected)
                         </h4>
                         {filterValue.length > 0 && (
@@ -997,7 +959,7 @@ export function DataTable({
                           </Button>
                         )}
                       </div>
-                      <div className="space-y-2 max-h-32 overflow-y-auto border rounded p-2 bg-background/50">
+                      <div className="space-y-1.5 max-h-32 overflow-y-auto border rounded p-2 bg-background/50">
                         {routeOptions.filter(route => route !== "WH").map(route => (
                           <div key={route} className="flex items-center space-x-2">
                             <Checkbox
@@ -1014,15 +976,15 @@ export function DataTable({
                     </div>
                     
                     {/* Separator */}
-                    <div className="border-t border-border/20"></div>
+                    <div className="border-t border-border/20 my-2"></div>
                   </>
                 )}
                 
                 {/* Trips Section (Delivery Filter) */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
+                <div className="space-y-1.5 text-sm">
+                  <div className="flex items-center justify-between mb-2">
                     <h4 className="font-medium text-sm flex items-center gap-2">
-                      <Filter className="w-3 h-3 text-orange-500" />
+                      <Filter className="w-3 h-3 text-gray-400 dark:text-orange-500" />
                       Hide Deliveries ({deliveryFilterValue.length} hidden)
                     </h4>
                     {deliveryFilterValue.length > 0 && (
@@ -1032,7 +994,7 @@ export function DataTable({
                       </Button>
                     )}
                   </div>
-                  <div className="space-y-2 max-h-32 overflow-y-auto border rounded p-2 bg-background/50">
+                  <div className="space-y-1.5 max-h-32 overflow-y-auto border rounded p-2 bg-background/50">
                     {deliveryOptions.map(delivery => (
                       <div key={delivery} className="flex items-center space-x-2">
                         <Checkbox

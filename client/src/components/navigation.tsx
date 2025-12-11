@@ -79,20 +79,38 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </div>
           </div>
 
-          {/* Navigation - Single Menu Button */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="btn-glass w-8 h-8 md:w-auto md:h-9 p-0 md:px-3 pagination-button group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 active:shadow-none"
-                data-testid="button-main-menu"
-                title="Menu"
-              >
-                <LayoutGrid className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
-                <span className="hidden md:inline ml-2 text-xs transition-all duration-300">Menu</span>
-              </Button>
-            </DropdownMenuTrigger>
+          {/* Navigation - Theme Toggle + Menu Button */}
+          <div className="flex items-center gap-2">
+            {/* Theme Toggle Button */}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onToggleTheme}
+              className="btn-glass w-8 h-8 p-0 pagination-button group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-amber-500/20 active:scale-95 active:shadow-none"
+              data-testid="button-toggle-theme"
+              title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-yellow-500 transition-all duration-300" />
+              ) : (
+                <Moon className="w-4 h-4 text-blue-500 transition-all duration-300" />
+              )}
+            </Button>
+
+            {/* Menu Button */}
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="btn-glass w-8 h-8 md:w-auto md:h-9 p-0 md:px-3 pagination-button group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 active:shadow-none"
+                  data-testid="button-main-menu"
+                  title="Menu"
+                >
+                  <LayoutGrid className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
+                  <span className="hidden md:inline ml-2 text-xs transition-all duration-300">Menu</span>
+                </Button>
+              </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
               className="w-56 bg-white/70 dark:bg-black/70 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-2xl"
@@ -115,25 +133,6 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               >
                 <ListChecks className="w-4 h-4 mr-2 text-purple-500 dark:text-purple-400" />
                 <span style={{fontSize: '10px'}}>Custom Tables</span>
-              </DropdownMenuItem>
-
-              {/* Theme Toggle */}
-              <DropdownMenuItem 
-                onClick={onToggleTheme}
-                className="cursor-pointer"
-                data-testid="menu-toggle-theme"
-              >
-                {theme === 'dark' ? (
-                  <>
-                    <Sun className="w-4 h-4 mr-2 text-yellow-500" />
-                    <span style={{fontSize: '10px'}}>Light Mode</span>
-                  </>
-                ) : (
-                  <>
-                    <Moon className="w-4 h-4 mr-2 text-blue-500" />
-                    <span style={{fontSize: '10px'}}>Dark Mode</span>
-                  </>
-                )}
               </DropdownMenuItem>
 
               {/* Help Guide */}
@@ -194,7 +193,8 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
-          </DropdownMenu>
+            </DropdownMenu>
+          </div>
 
           {/* Hidden Add Column Modal - triggered from dropdown */}
           {editMode && onAddColumn && (

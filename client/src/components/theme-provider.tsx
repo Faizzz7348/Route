@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { updateThemeColor, THEME_COLORS } from '@/lib/pwa';
 
 type Theme = 'light' | 'dark';
 
@@ -18,11 +19,16 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const root = document.documentElement;
     
+    // Update theme class
     if (theme === 'dark') {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
+    
+    // Update browser tab/address bar color based on theme
+    const themeColor = theme === 'dark' ? THEME_COLORS.dark : THEME_COLORS.light;
+    updateThemeColor(themeColor);
     
     localStorage.setItem('theme', theme);
   }, [theme]);

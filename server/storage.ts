@@ -228,19 +228,10 @@ export class MemStorage implements IStorage {
       },
       {
         id: randomUUID(),
-        name: "Kilometer",
-        dataKey: "kilometer",
-        type: "number",
-        sortOrder: 11,
-        isEditable: "false",
-        options: [] as string[],
-      },
-      {
-        id: randomUUID(),
         name: "Toll Price",
         dataKey: "tollPrice",
         type: "currency",
-        sortOrder: 12,
+        sortOrder: 11,
         isEditable: "false",
         options: [] as string[],
       },
@@ -428,47 +419,19 @@ export class MemStorage implements IStorage {
 
   private ensureCoreColumns() {
     const existingColumns = Array.from(this.tableColumns.values());
-    const kilometerColumn = existingColumns.find(col => col.dataKey === 'kilometer');
     const tollPriceColumn = existingColumns.find(col => col.dataKey === 'tollPrice');
     
-    if (!kilometerColumn) {
-      const infoColumn = existingColumns.find(col => col.dataKey === 'info');
-      const infoSortOrder = infoColumn ? infoColumn.sortOrder : 6;
-      
-      // Create Kilometer column right after Info
-      const kilometerCol: TableColumn = {
-        id: randomUUID(),
-        name: "Kilometer",
-        dataKey: "kilometer",
-        type: "number",
-        sortOrder: infoSortOrder + 1,
-        isEditable: "false",
-        options: [],
-      };
-      
-      this.tableColumns.set(kilometerCol.id, kilometerCol);
-      
-      // Adjust sortOrder of subsequent columns
-      existingColumns.forEach(col => {
-        if (col.sortOrder > infoSortOrder) {
-          col.sortOrder += 1;
-          this.tableColumns.set(col.id, col);
-        }
-      });
-    }
-    
     if (!tollPriceColumn) {
-      const kilometerCol = existingColumns.find(col => col.dataKey === 'kilometer') || 
-                           Array.from(this.tableColumns.values()).find(col => col.dataKey === 'kilometer');
-      const kilometerSortOrder = kilometerCol ? kilometerCol.sortOrder : 11;
+      const imagesColumn = existingColumns.find(col => col.dataKey === 'images');
+      const imagesSortOrder = imagesColumn ? imagesColumn.sortOrder : 10;
       
-      // Create Toll Price column right after Kilometer
+      // Create Toll Price column right after Images
       const tollPriceCol: TableColumn = {
         id: randomUUID(),
         name: "Toll Price",
         dataKey: "tollPrice",
         type: "currency",
-        sortOrder: kilometerSortOrder + 1,
+        sortOrder: imagesSortOrder + 1,
         isEditable: "false",
         options: [],
       };
@@ -478,7 +441,7 @@ export class MemStorage implements IStorage {
       // Adjust sortOrder of subsequent columns
       const currentColumns = Array.from(this.tableColumns.values());
       currentColumns.forEach(col => {
-        if (col.sortOrder > kilometerSortOrder && col.id !== tollPriceCol.id) {
+        if (col.sortOrder > imagesSortOrder && col.id !== tollPriceCol.id) {
           col.sortOrder += 1;
           this.tableColumns.set(col.id, col);
         }
