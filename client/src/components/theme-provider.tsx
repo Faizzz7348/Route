@@ -1,53 +1,88 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { updateThemeColor, THEME_COLORS } from '@/lib/pwa';
 
-type Theme = 'light' | 'dark';
+type Theme = 'dark' | 'light' | 'system';
 
-interface ThemeContextType {
+type ThemeProviderProps = {
+  children: ReactNode;
+  defaultTheme?: Theme;
+  storageKey?: string;
+}
+
+type ThemeProviderState = {
   theme: Theme;
+  setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const initialState: ThemeProviderState = {
+  theme: 'system',
+  setTheme: () => null,
+  toggleTheme: () => null,
+}
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const savedTheme = localStorage.getItem('theme') as Theme;
-    return savedTheme || 'light';
-  });
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
+export function ThemeProvider({
+  children,
+  defaultTheme = 'system',
+  storageKey = 'vite-ui-theme',
+  ...props
+}: ThemeProviderProps) {
+  const [theme, setTheme] = useState<Theme>(
+    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
+  );
 
   useEffect(() => {
-    const root = document.documentElement;
-    
-    // Update theme class
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
+    const root = window.document.documentElement;
+
+    root.classList.remove('light', 'dark');
+
+    if (theme === 'system') {
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+
+      root.classList.add(systemTheme);
+      
+      // Update PWA theme color based on system preference
+      const themeColor = systemTheme === 'dark' ? THEME_COLORS.dark : THEME_COLORS.light;
+      updateThemeColor(themeColor);
+      return;
     }
+
+    root.classList.add(theme);
     
-    // Update browser tab/address bar color based on theme
+    // Update PWA theme color
     const themeColor = theme === 'dark' ? THEME_COLORS.dark : THEME_COLORS.light;
     updateThemeColor(themeColor);
-    
-    localStorage.setItem('theme', theme);
   }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
+  const value = {
+    theme,
+    setTheme: (theme: Theme) => {
+      localStorage.setItem(storageKey, theme);
+      setTheme(theme);
+    },
+    toggleTheme: () => {
+      const newTheme = theme === 'light' ? 'dark' : 'light';
+      localStorage.setItem(storageKey, newTheme);
+      setTheme(newTheme);
+    },
+  }
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeProviderContext.Provider {...props} value={value}>
       {children}
-    </ThemeContext.Provider>
+    </ThemeProviderContext.Provider>
   );
 }
 
-export function useTheme() {
-  const context = useContext(ThemeContext);
-  if (context === undefined) {
+export const useTheme = () => {
+  const context = useContext(ThemeProviderContext);
+
+  if (context === undefined)
     throw new Error('useTheme must be used within a ThemeProvider');
-  }
+
   return context;
 }
