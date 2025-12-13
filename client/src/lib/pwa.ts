@@ -139,8 +139,8 @@ export function updateThemeColor(color: string): void {
   }
 }
 
-// Predefined theme colors
+// Predefined theme colors - Material Design 2
 export const THEME_COLORS = {
-  light: '#3b82f6',  // Blue for light mode
-  dark: '#0f172a',   // Slate-900 for dark mode
+  light: '#1976D2',  // Blue 600 - Material Design Primary
+  dark: '#121212',   // Material Dark Background
 } as const;

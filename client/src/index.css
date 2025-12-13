@@ -1,4 +1,7 @@
 
+/* Material Design 2 - Roboto Font Family */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&family=Roboto+Slab:wght@400;700&display=swap');
+
 /* Leaflet Map Styles */
 @import url('https://unpkg.com/leaflet@1.7.1/dist/leaflet.css');
 
@@ -58,99 +61,111 @@ textarea {
 @tailwind utilities;
 
 :root {
-  /* Light Theme - Clean & Modern with improved contrast (Dimmed) */
-  --background: hsl(210, 20%, 90%);
-  --foreground: hsl(222, 50%, 10%);
-  --card: hsl(210, 15%, 94%);
-  --card-foreground: hsl(222, 50%, 10%);
-  --popover: hsl(210, 15%, 94%);
-  --popover-foreground: hsl(222, 50%, 10%);
-  --primary: hsl(217, 85%, 52%);
+  /* Light Theme - Material Design 2 Color System */
+  /* Primary: Blue 600 (#1976D2) - Main brand color */
+  /* Secondary: Teal A400 (#1DE9B6) - Accent color */
+  /* Surface: White/Grey 50 for elevated surfaces */
+  /* Background: Grey 50 (#FAFAFA) */
+  /* Error: Red 600 (#E53935) */
+  
+  --background: hsl(0, 0%, 98%); /* #FAFAFA - Grey 50 */
+  --foreground: hsl(0, 0%, 13%); /* #212121 - Grey 900 (high emphasis text) */
+  --card: hsl(0, 0%, 100%); /* #FFFFFF - White surface */
+  --card-foreground: hsl(0, 0%, 13%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 13%);
+  --primary: hsl(207, 90%, 54%); /* #1976D2 - Blue 600 */
   --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(210, 35%, 88%);
-  --secondary-foreground: hsl(222, 50%, 10%);
-  --muted: hsl(210, 30%, 86%);
-  --muted-foreground: hsl(215, 18%, 40%);
-  --accent: hsl(210, 35%, 87%);
-  --accent-foreground: hsl(222, 50%, 10%);
-  --destructive: hsl(0, 84%, 60%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --border: hsl(214, 25%, 80%);
-  --input: hsl(214, 25%, 82%);
-  --ring: hsl(217, 85%, 52%);
-  --chart-1: hsl(217, 85%, 52%);
-  --chart-2: hsl(142, 76%, 36%);
-  --chart-3: hsl(38, 92%, 50%);
-  --chart-4: hsl(280, 65%, 60%);
-  --chart-5: hsl(340, 82%, 52%);
-  --sidebar: hsl(210, 20%, 90%);
-  --sidebar-foreground: hsl(222, 50%, 10%);
-  --sidebar-primary: hsl(217, 85%, 52%);
+  --secondary: hsl(166, 77%, 51%); /* #1DE9B6 - Teal A400 */
+  --secondary-foreground: hsl(0, 0%, 13%);
+  --muted: hsl(0, 0%, 96%); /* #F5F5F5 - Grey 100 */
+  --muted-foreground: hsl(0, 0%, 38%); /* #616161 - Grey 700 (medium emphasis) */
+  --accent: hsl(166, 77%, 51%); /* Teal A400 for accent */
+  --accent-foreground: hsl(0, 0%, 13%);
+  --destructive: hsl(4, 90%, 58%); /* #F44336 - Red 500 */
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(0, 0%, 88%); /* #E0E0E0 - Grey 300 */
+  --input: hsl(0, 0%, 100%);
+  --ring: hsl(207, 90%, 54%);
+  --chart-1: hsl(207, 90%, 54%); /* Blue 600 */
+  --chart-2: hsl(166, 77%, 51%); /* Teal A400 */
+  --chart-3: hsl(36, 100%, 50%); /* Amber 500 */
+  --chart-4: hsl(291, 64%, 42%); /* Purple 500 */
+  --chart-5: hsl(340, 82%, 52%); /* Pink 500 */
+  --sidebar: hsl(0, 0%, 98%);
+  --sidebar-foreground: hsl(0, 0%, 13%);
+  --sidebar-primary: hsl(207, 90%, 54%);
   --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: hsl(210, 35%, 87%);
-  --sidebar-accent-foreground: hsl(222, 50%, 10%);
-  --sidebar-border: hsl(214, 25%, 80%);
-  --sidebar-ring: hsl(217, 85%, 52%);
+  --sidebar-accent: hsl(0, 0%, 96%);
+  --sidebar-accent-foreground: hsl(0, 0%, 13%);
+  --sidebar-border: hsl(0, 0%, 88%);
+  --sidebar-ring: hsl(207, 90%, 54%);
   
-  /* Light glass effect variables with enhanced shadows */
-  --glass-bg: rgba(248, 250, 252, 0.90);
-  --glass-border: rgba(148, 163, 184, 0.35);
-  --glass-hover: rgba(241, 245, 249, 0.95);
+  /* Light glass effect variables - Material Design elevation */
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(0, 0, 0, 0.12);
+  --glass-hover: rgba(255, 255, 255, 0.96);
   
-  /* Light mode grey patterns */
-  --pattern-dots: radial-gradient(circle, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
-  --pattern-grid: linear-gradient(rgba(148, 163, 184, 0.05) 1px, transparent 1px),
-                  linear-gradient(90deg, rgba(148, 163, 184, 0.05) 1px, transparent 1px);
-  --font-sans: 'Helvetica Neue', sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-  --radius: 8px;
-  --shadow-2xs: 0px 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-xs: 0px 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.08), 0px 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow: 0px 4px 6px rgba(0, 0, 0, 0.08), 0px 2px 4px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0px 6px 12px rgba(0, 0, 0, 0.1), 0px 2px 6px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0px 10px 20px rgba(0, 0, 0, 0.12), 0px 4px 8px rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0px 20px 40px rgba(0, 0, 0, 0.15), 0px 8px 16px rgba(0, 0, 0, 0.1);
-  --shadow-2xl: 0px 25px 50px rgba(0, 0, 0, 0.18);
+  /* Material Design 2 pattern (subtle) */
+  --pattern-dots: none; /* Material Design uses clean solid backgrounds */
+  --pattern-grid: none;
+  --font-sans: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-serif: 'Roboto Slab', Georgia, serif;
+  --font-mono: 'Roboto Mono', 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+  --radius: 4px; /* Material Design uses 4px default radius */
+  /* Material Design 2 Elevation System (0dp to 24dp) */
+  --shadow-2xs: 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12), 0px 1px 3px 0px rgba(0, 0, 0, 0.20); /* 1dp */
+  --shadow-xs: 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 3px 1px -2px rgba(0, 0, 0, 0.12), 0px 1px 5px 0px rgba(0, 0, 0, 0.20); /* 2dp */
+  --shadow-sm: 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 3px 3px -2px rgba(0, 0, 0, 0.12), 0px 1px 8px 0px rgba(0, 0, 0, 0.20); /* 4dp */
+  --shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12), 0px 2px 4px -1px rgba(0, 0, 0, 0.20); /* 6dp */
+  --shadow-md: 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12), 0px 3px 5px -1px rgba(0, 0, 0, 0.20); /* 8dp */
+  --shadow-lg: 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12), 0px 5px 5px -3px rgba(0, 0, 0, 0.20); /* 12dp */
+  --shadow-xl: 0px 12px 17px 2px rgba(0, 0, 0, 0.14), 0px 5px 22px 4px rgba(0, 0, 0, 0.12), 0px 7px 8px -4px rgba(0, 0, 0, 0.20); /* 16dp */
+  --shadow-2xl: 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12), 0px 11px 15px -7px rgba(0, 0, 0, 0.20); /* 24dp */
   --tracking-normal: 0em;
   --spacing: 0.25rem;
 }
 
 .dark {
-  /* Dark Theme - Deep Black with premium contrast */
-  --background: hsl(0, 0%, 0%);
-  --foreground: hsl(0, 0%, 98%);
-  --card: hsl(0, 0%, 4%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --popover: hsl(0, 0%, 4%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --primary: hsl(217, 85%, 58%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(0, 0%, 8%);
-  --secondary-foreground: hsl(0, 0%, 95%);
-  --muted: hsl(0, 0%, 10%);
-  --muted-foreground: hsl(0, 0%, 65%);
-  --accent: hsl(0, 0%, 12%);
-  --accent-foreground: hsl(0, 0%, 95%);
-  --destructive: hsl(0, 70%, 50%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --border: hsl(0, 0%, 15%);
-  --input: hsl(0, 0%, 8%);
-  --ring: hsl(217, 85%, 58%);
-  --sidebar: hsl(0, 0%, 2%);
-  --sidebar-foreground: hsl(0, 0%, 98%);
-  --sidebar-primary: hsl(217, 85%, 58%);
-  --sidebar-primary-foreground: hsl(0, 0%, 100%);
-  --sidebar-accent: hsl(0, 0%, 12%);
-  --sidebar-accent-foreground: hsl(0, 0%, 95%);
-  --sidebar-border: hsl(0, 0%, 15%);
-  --sidebar-ring: hsl(217, 85%, 58%);
+  /* Dark Theme - Material Design 2 Dark Theme */
+  /* Background: Grey 900 (#121212) with elevation overlays */
+  /* Primary: Blue 200 (#90CAF9) - Desaturated for dark theme */
+  /* Secondary: Teal A200 (#64FFDA) */
+  /* Surface: Grey 800 with white overlay for elevation */
+  /* Error: Red 300 (#E57373) */
   
-  /* Dark frosted glass effects for deep black mode */
-  --glass-bg: rgba(0, 0, 0, 0.8);
+  --background: hsl(0, 0%, 7%); /* #121212 - Material dark background */
+  --foreground: hsl(0, 0%, 100%); /* #FFFFFF - high emphasis text (87% opacity) */
+  --card: hsl(0, 0%, 11%); /* #1E1E1E - elevated surface (1dp) */
+  --card-foreground: hsl(0, 0%, 100%);
+  --popover: hsl(0, 0%, 11%); /* #1E1E1E */
+  --popover-foreground: hsl(0, 0%, 100%);
+  --primary: hsl(207, 79%, 76%); /* #90CAF9 - Blue 200 (dark theme primary) */
+  --primary-foreground: hsl(0, 0%, 0%);
+  --secondary: hsl(166, 100%, 70%); /* #64FFDA - Teal A200 */
+  --secondary-foreground: hsl(0, 0%, 0%);
+  --muted: hsl(0, 0%, 15%); /* #262626 - Grey 800 area */
+  --muted-foreground: hsl(0, 0%, 74%); /* #BDBDBD - medium emphasis (60%) */
+  --accent: hsl(166, 100%, 70%); /* Teal A200 */
+  --accent-foreground: hsl(0, 0%, 0%);
+  --destructive: hsl(4, 69%, 67%); /* #EF5350 - Red 400 */
+  --destructive-foreground: hsl(0, 0%, 0%);
+  --border: hsl(0, 0%, 23%); /* #3A3A3A - divider (12% white) */
+  --input: hsl(0, 0%, 11%);
+  --ring: hsl(207, 79%, 76%);
+  --sidebar: hsl(0, 0%, 7%);
+  --sidebar-foreground: hsl(0, 0%, 100%);
+  --sidebar-primary: hsl(207, 79%, 76%);
+  --sidebar-primary-foreground: hsl(0, 0%, 0%);
+  --sidebar-accent: hsl(0, 0%, 15%);
+  --sidebar-accent-foreground: hsl(0, 0%, 100%);
+  --sidebar-border: hsl(0, 0%, 23%);
+  --sidebar-ring: hsl(207, 79%, 76%);
+  
+  /* Dark glass effects - Material elevation */
+  --glass-bg: rgba(30, 30, 30, 0.85);
   --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-hover: rgba(0, 0, 0, 0.9);
+  --glass-hover: rgba(30, 30, 30, 0.92);
 }
 
 @layer base {
@@ -164,120 +179,136 @@ textarea {
 
   body {
     @apply font-sans antialiased text-foreground h-full;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: var(--background);
   }
   
-  /* Light mode subtle pattern background */
-  body:not(.dark) {
-    background-image: var(--pattern-dots);
-    background-size: 20px 20px;
-  }
+  /* Material Design uses clean solid backgrounds */
 
-  /* Glass morphism utilities with enhanced shadows */
+  /* Material Design Glass Effects with Elevation */
   .glass {
     background: var(--glass-bg);
-    backdrop-filter: blur(24px) saturate(1.4);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08), 
-                0 2px 8px rgba(0, 0, 0, 0.06),
-                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    box-shadow: var(--shadow-md); /* 8dp elevation */
   }
   
-  /* Light mode specific glass enhancement */
+  /* Light mode uses subtle shadows */
   :not(.dark) .glass {
-    box-shadow: 0 4px 16px rgba(100, 116, 139, 0.12), 
-                0 2px 8px rgba(100, 116, 139, 0.08),
-                0 1px 3px rgba(100, 116, 139, 0.05),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+    box-shadow: var(--shadow-sm); /* 4dp elevation */
   }
   
   .dark .glass {
-    backdrop-filter: blur(24px) saturate(1.4) brightness(0.8);
-    -webkit-backdrop-filter: blur(24px) saturate(1.4) brightness(0.8);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    /* Dark theme surfaces use white overlay for elevation */
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.08)
+    ), var(--glass-bg);
+    box-shadow: var(--shadow-md);
   }
 
   .glass-card {
     background-color: var(--card);
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-sm); /* 4dp elevation */
+    border-radius: var(--radius);
   }
   
-  /* Light mode card shadows */
+  /* Light mode card - clean elevation */
   :not(.dark) .glass-card {
-    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.1),
-                0 1px 4px rgba(100, 116, 139, 0.06),
-                0 0 0 1px rgba(148, 163, 184, 0.08);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  /* Dark mode card - elevated surface with white overlay */
+  .dark .glass-card {
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.05)
+    ), var(--card);
+    box-shadow: var(--shadow);
   }
 
   .glass-hover:hover {
     background: var(--glass-hover);
-    border-color: var(--primary);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--shadow-lg); /* 12dp elevation on hover */
+    transform: translateY(-1px);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); /* Material easing */
   }
   
   .dark .glass-hover:hover {
-    border-color: rgba(255, 255, 255, 0.15);
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.12)
+    ), var(--glass-hover);
   }
 
   .glass-table {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(40px) saturate(1.5);
-    -webkit-backdrop-filter: blur(40px) saturate(1.5);
-    border: 1px solid rgba(148, 163, 184, 0.25);
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(100, 116, 139, 0.12),
-                0 4px 16px rgba(100, 116, 139, 0.08);
+    background: var(--card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: calc(var(--radius) * 2); /* 8px for larger surfaces */
+    box-shadow: var(--shadow-md); /* 8dp elevation */
   }
   
   .dark .glass-table {
-    background: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(40px) saturate(1.5) brightness(0.9);
-    -webkit-backdrop-filter: blur(40px) saturate(1.5) brightness(0.9);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.12);
+    /* 8dp elevation in dark theme - white overlay at 8% */
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.08)
+    ), var(--card);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
   }
 
-  /* iOS Frosted Glass Inputs with enhanced shadows */
+  /* Material Design Input Fields */
   .glass-input {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(20px) saturate(1.3);
-    -webkit-backdrop-filter: blur(20px) saturate(1.3);
-    border: 1px solid rgba(148, 163, 184, 0.3);
+    background: var(--input);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
     color: var(--foreground) !important;
-    box-shadow: 0 2px 8px rgba(100, 116, 139, 0.08),
-                0 1px 4px rgba(100, 116, 139, 0.05),
-                inset 0 1px 2px rgba(255, 255, 255, 0.5);
-    border-radius: 16px;
-    transition: all 0.3s ease;
+    box-shadow: var(--shadow-xs); /* 2dp elevation */
+    border-radius: var(--radius);
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1); /* Material easing */
   }
   
   .dark .glass-input {
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(20px) saturate(1.3) brightness(0.9);
-    -webkit-backdrop-filter: blur(20px) saturate(1.3) brightness(0.9);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.12);
+    /* Elevated input in dark mode - 2dp */
+    background: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.05)
+    ), var(--input);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-xs);
   }
 
   .glass-input:focus {
-    background: rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.12);
-    color: var(--foreground) !important;
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.12); /* Material focus indicator */
   }
   
   .dark .glass-input:focus {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.2);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 4px 16px 0 rgba(0, 0, 0, 0.15);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(144, 202, 249, 0.12);
   }
 
   .glass-input::placeholder {
-    color: hsl(var(--muted-foreground)) !important;
-    opacity: 0.7;
+    color: var(--muted-foreground) !important;
+    opacity: 0.6; /* Material medium emphasis */
   }
 
   /* Matte Glass Utilities */
