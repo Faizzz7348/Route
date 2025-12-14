@@ -14,9 +14,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar as CalendarIcon, Plus, Edit, Trash2 } from "lucide-react";
-import '@fullcalendar/core/index.css';
-import '@fullcalendar/daygrid/index.css';
-import '@fullcalendar/timegrid/index.css';
 
 interface CalendarEvent {
   id: string;
@@ -165,36 +162,99 @@ export default function CalendarPage() {
   return (
     <>
       <style>{`
+        /* FullCalendar Base Styles */
+        .fc {
+          font-family: inherit;
+        }
+        
+        .fc table {
+          border-collapse: separate;
+          border-spacing: 0;
+        }
+        
+        .fc-theme-standard td,
+        .fc-theme-standard th {
+          border: 1px solid #e5e7eb;
+        }
+        
+        .fc-scrollgrid {
+          border: 1px solid #e5e7eb;
+        }
+        
+        .fc-col-header-cell {
+          font-weight: 600;
+          padding: 8px 4px;
+        }
+        
+        .fc-daygrid-day {
+          padding: 4px;
+        }
+        
+        .fc-daygrid-day-number {
+          padding: 4px;
+        }
+        
+        .fc-event {
+          border-radius: 4px;
+          padding: 2px 4px;
+          font-size: 12px;
+        }
+        
+        .fc-toolbar-title {
+          font-size: 1.5rem;
+          font-weight: 700;
+        }
+        
+        .fc-button {
+          padding: 6px 12px;
+          border-radius: 6px;
+          font-size: 14px;
+          font-weight: 500;
+          text-transform: capitalize;
+        }
+        
+        .fc-button-primary {
+          background-color: #3b82f6;
+          border-color: #3b82f6;
+        }
+        
+        .fc-button-primary:hover {
+          background-color: #2563eb;
+          border-color: #2563eb;
+        }
+        
+        .fc-button-primary:not(:disabled).fc-button-active {
+          background-color: #1d4ed8;
+          border-color: #1d4ed8;
+        }
+        
+        .fc-day-today {
+          background-color: rgba(59, 130, 246, 0.05);
+        }
+        
         /* Dark mode calendar styling */
         .dark .fc {
           --fc-border-color: rgba(255, 255, 255, 0.1);
           --fc-page-bg-color: transparent;
-        }
-        
-        .dark .fc .fc-scrollgrid {
-          border-color: rgba(255, 255, 255, 0.1);
-          border-width: 1px;
-        }
-        
-        .dark .fc th {
-          background-color: rgba(17, 24, 39, 0.8);
-          border-color: rgba(255, 255, 255, 0.1);
-          border-width: 1px;
-          color: #9ca3af;
-        }
-        
-        .dark .fc td {
-          background-color: rgba(31, 41, 55, 0.6);
-          border-color: rgba(255, 255, 255, 0.08);
-          border-width: 1px;
-        }
-        
-        .dark .fc-daygrid-day-top {
           color: #d1d5db;
         }
         
-        .dark .fc-col-header-cell-cushion {
+        .dark .fc-theme-standard td,
+        .dark .fc-theme-standard th {
+          border-color: rgba(255, 255, 255, 0.08);
+        }
+        
+        .dark .fc-scrollgrid {
+          border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .dark .fc-col-header-cell {
+          background-color: rgba(17, 24, 39, 0.8);
           color: #9ca3af;
+        }
+        
+        .dark .fc-daygrid-day {
+          background-color: rgba(31, 41, 55, 0.6);
         }
         
         .dark .fc-daygrid-day-number {
@@ -202,31 +262,24 @@ export default function CalendarPage() {
         }
         
         .dark .fc-day-today {
-          background-color: rgba(59, 130, 246, 0.1) !important;
+          background-color: rgba(59, 130, 246, 0.15) !important;
         }
         
-        .dark .fc-button {
+        .dark .fc-button-primary {
           background-color: rgba(59, 130, 246, 0.8);
           border-color: rgba(59, 130, 246, 0.5);
-          color: white;
         }
         
-        .dark .fc-button:hover {
+        .dark .fc-button-primary:hover {
           background-color: rgba(37, 99, 235, 0.9);
         }
         
-        .dark .fc-button-active {
-          background-color: rgba(37, 99, 235, 1) !important;
+        .dark .fc-button-primary:not(:disabled).fc-button-active {
+          background-color: rgba(29, 78, 216, 1);
         }
         
-        /* Light mode - thinner borders */
-        .fc .fc-scrollgrid {
-          border-width: 1px;
-        }
-        
-        .fc th,
-        .fc td {
-          border-width: 1px;
+        .dark .fc-toolbar-title {
+          color: #f3f4f6;
         }
       `}</style>
       <div className="animate-in fade-in duration-500">
