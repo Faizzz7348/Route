@@ -152,6 +152,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/table-rows/bulk-update-color", async (req, res) => {
+    try {
+      const { route, color } = req.body;
+      if (!route || !color) {
+        return res.status(400).json({ message: "route and color are required" });
+      }
+      
+      const updatedRows = await storage.bulkUpdateColorByRoute(route, color);
+      res.json({ message: "Colors updated successfully", count: updatedRows.length, rows: updatedRows });
+    } catch (error) {
+      console.error('Error bulk updating colors:', error);
+      res.status(500).json({ message: "Failed to bulk update colors" });
+    }
+  });
+
   // Table columns routes
   app.get("/api/table-columns", async (req, res) => {
     try {

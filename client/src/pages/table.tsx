@@ -11,6 +11,7 @@ import { RouteOptimizationModal } from "@/components/route-optimization-modal";
 import { ShareDialog } from "@/components/share-dialog";
 import { SavedLinksModal } from "@/components/saved-links-modal";
 import { Tutorial } from "@/components/tutorial";
+import { BulkColorModal } from "@/components/bulk-color-modal";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,6 +75,7 @@ export default function TablePage() {
   const [showDeletePageConfirmation, setShowDeletePageConfirmation] = useState(false);
   const [pageToDelete, setPageToDelete] = useState<Page | null>(null);
   const [showTutorial, setShowTutorial] = useState(false);
+  const [bulkColorModalOpen, setBulkColorModalOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -176,6 +178,29 @@ export default function TablePage() {
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to delete page",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Bulk color update mutation
+  const bulkUpdateColorMutation = useMutation({
+    mutationFn: async ({ route, color }: { route: string; color: string }) => {
+      const res = await apiRequest('PUT', '/api/table-rows/bulk-update-color', { route, color });
+      return await res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/table-rows'] });
+      setBulkColorModalOpen(false);
+      toast({
+        title: "Success",
+        description: "Marker colors updated successfully!",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to update marker colors",
         variant: "destructive",
       });
     },
@@ -350,6 +375,10 @@ export default function TablePage() {
 
     setPageToDelete(page);
     setShowDeletePageConfirmation(true);
+  };
+
+  const handleBulkColorUpdate = (route: string, color: string) => {
+    bulkUpdateColorMutation.mutate({ route, color });
   };
 
   const confirmDeletePage = async () => {
@@ -1007,6 +1036,7 @@ export default function TablePage() {
           onSaveLayout={() => {}}
           onSavedLinks={() => setSavedLinksModalOpen(true)}
           onShowTutorial={() => setShowTutorial(true)}
+          onBulkColorEdit={() => setBulkColorModalOpen(true)}
           onAddColumn={async (columnData) => {
             try {
               const newColumn = await createColumn.mutateAsync(columnData);
@@ -1714,6 +1744,16 @@ export default function TablePage() {
           onClose={() => setShowTutorial(false)}
         />
       )}
+
+      {/* Bulk Color Modal */}
+      <BulkColorModal
+        open={bulkColorModalOpen}
+        onOpenChange={setBulkColorModalOpen}
+        routeOptions={routeOptions}
+        onUpdate={handleBulkColorUpdate}
+        isPending={bulkUpdateColorMutation.isPending}
+        currentRows={rows}
+      />
 
         </div>
       </main>

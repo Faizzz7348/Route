@@ -669,116 +669,9 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
               </div>
               <p className="text-muted-foreground" style={{fontSize: '10px'}}>GPS coordinates for map location</p>
               
-              {/* Marker Color Presets by Route */}
-              <div className="space-y-3 pt-3 border-t border-purple-200/50 dark:border-purple-800/50">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-purple-500 dark:bg-purple-400 rounded-full"></div>
-                  <h4 className="font-semibold text-purple-600 dark:text-purple-400" style={{fontSize: '10px'}}>🎨 Quick Color Presets</h4>
-                </div>
-                <div className="grid grid-cols-4 gap-2">
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#3b82f6' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition-all duration-200 border-2 border-transparent hover:border-blue-300 dark:hover:border-blue-700"
-                    title="Blue - Default"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#3b82f6'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Blue</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#ef4444' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/50 transition-all duration-200 border-2 border-transparent hover:border-red-300 dark:hover:border-red-700"
-                    title="Red - KL4"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#ef4444'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Red</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#22c55e' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-950/50 transition-all duration-200 border-2 border-transparent hover:border-green-300 dark:hover:border-green-700"
-                    title="Green - KL6"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#22c55e'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Green</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#f97316' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-950/50 transition-all duration-200 border-2 border-transparent hover:border-orange-300 dark:hover:border-orange-700"
-                    title="Orange - KL3"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#f97316'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Orange</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#8b5cf6' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-violet-50 dark:hover:bg-violet-950/50 transition-all duration-200 border-2 border-transparent hover:border-violet-300 dark:hover:border-violet-700"
-                    title="Violet - KL1"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#8b5cf6'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Violet</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#eab308' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-950/50 transition-all duration-200 border-2 border-transparent hover:border-yellow-300 dark:hover:border-yellow-700"
-                    title="Yellow - KL5"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#eab308'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Yellow</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#6366f1' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-all duration-200 border-2 border-transparent hover:border-indigo-300 dark:hover:border-indigo-700"
-                    title="Indigo - KL7"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#6366f1'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Indigo</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#64748b' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-950/50 transition-all duration-200 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700"
-                    title="Gray - Others"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#64748b'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Gray</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#ec4899' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-950/50 transition-all duration-200 border-2 border-transparent hover:border-pink-300 dark:hover:border-pink-700"
-                    title="Pink - Special"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#ec4899'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Pink</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#14b8a6' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-950/50 transition-all duration-200 border-2 border-transparent hover:border-teal-300 dark:hover:border-teal-700"
-                    title="Teal - Alternate"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#14b8a6'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Teal</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#f59e0b' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/50 transition-all duration-200 border-2 border-transparent hover:border-amber-300 dark:hover:border-amber-700"
-                    title="Amber - SL1"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#f59e0b'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Amber</span>
-                  </button>
-                  <button
-                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#000000' }))}
-                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 border-2 border-transparent hover:border-gray-400 dark:hover:border-gray-600"
-                    title="Black - Warehouse"
-                  >
-                    <div className="w-8 h-8 rounded-full shadow-md border border-gray-300 dark:border-gray-600" style={{backgroundColor: '#000000'}}></div>
-                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Black</span>
-                  </button>
-                </div>
-                <p className="text-muted-foreground" style={{fontSize: '9px'}}>Click a color preset or use custom color below</p>
-              </div>
-
-              {/* Custom Marker Color Picker */}
+              {/* Marker Color Picker */}
               <div className="space-y-2 pt-3">
-                <Label htmlFor="markerColor" style={{fontSize: '10px'}}>🎨 Custom Marker Color</Label>
+                <Label htmlFor="markerColor" style={{fontSize: '10px'}}>🎨 Marker Color</Label>
                 <div className="flex items-center gap-3">
                   <Input
                     id="markerColor"
@@ -798,7 +691,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
                     pattern="^#[0-9A-Fa-f]{6}$"
                   />
                 </div>
-                <p className="text-muted-foreground" style={{fontSize: '10px'}}>Enter any hex color code for custom marker pin</p>
+                <p className="text-muted-foreground" style={{fontSize: '10px'}}>Custom color for map marker pin</p>
               </div>
               
               {/* Save/Cancel Buttons - Right below coordinates */}

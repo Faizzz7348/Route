@@ -47,6 +47,7 @@ export interface IStorage {
   ): Promise<TableRow | undefined>;
   deleteTableRow(id: string): Promise<boolean>;
   reorderTableRows(rowIds: string[]): Promise<TableRow[]>;
+  bulkUpdateColorByRoute(route: string, color: string): Promise<TableRow[]>;
 
   // Table columns
   getTableColumns(): Promise<TableColumn[]>;
@@ -529,6 +530,18 @@ export class MemStorage implements IStorage {
       }
     });
     return this.getTableRows();
+  }
+
+  async bulkUpdateColorByRoute(route: string, color: string): Promise<TableRow[]> {
+    const updatedRows: TableRow[] = [];
+    this.tableRows.forEach((row) => {
+      if (row.route === route) {
+        row.markerColor = color;
+        this.tableRows.set(row.id, row);
+        updatedRows.push(row);
+      }
+    });
+    return updatedRows;
   }
 
   // Table columns methods
@@ -1354,6 +1367,16 @@ export class DatabaseStorage implements IStorage {
     );
     
     return this.getTableRows();
+  }
+
+  async bulkUpdateColorByRoute(route: string, color: string): Promise<TableRow[]> {
+    const updatedRows = await db
+      .update(tableRows)
+      .set({ markerColor: color })
+      .where(eq(tableRows.route, route))
+      .returning();
+    
+    return updatedRows;
   }
 
   // Table columns methods

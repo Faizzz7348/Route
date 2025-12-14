@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Calendar } from "lucide-react";
+import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Calendar, Palette } from "lucide-react";
 import { useLocation } from "wouter";
 import { AddColumnModal } from "./add-column-modal";
 import {
@@ -24,12 +24,13 @@ interface NavigationProps {
   onSaveLayout?: () => void;
   onSavedLinks?: () => void;
   onShowTutorial?: () => void;
+  onBulkColorEdit?: () => void;
   isAuthenticated?: boolean;
   theme?: string;
   onToggleTheme?: () => void;
 }
 
-export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, isAuthenticated, theme, onToggleTheme }: NavigationProps) {
+export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, onBulkColorEdit, isAuthenticated, theme, onToggleTheme }: NavigationProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [, navigate] = useLocation();
 
@@ -180,6 +181,16 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                     >
                       <Plus className="w-4 h-4 mr-2" />
                       <span style={{fontSize: '10px'}}>Add Column</span>
+                    </DropdownMenuItem>
+                  )}
+                  {onBulkColorEdit && (
+                    <DropdownMenuItem 
+                      onClick={onBulkColorEdit}
+                      className="cursor-pointer"
+                      data-testid="menu-bulk-color"
+                    >
+                      <Palette className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" />
+                      <span style={{fontSize: '10px'}}>Set Color by Route</span>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuSeparator className="bg-gray-200/50 dark:bg-gray-700/50" />
