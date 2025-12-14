@@ -312,7 +312,7 @@ export default function SharedTablePage() {
         </div>
       </nav>
 
-      <main className="pt-4">
+      <main className="pt-4 bg-white dark:bg-black min-h-screen">
         <div className="container mx-auto px-4 py-8">
           {/* Data Table with all interactive features enabled */}
           <DataTable

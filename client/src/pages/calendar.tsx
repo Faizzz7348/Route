@@ -290,7 +290,7 @@ export default function CalendarPage() {
         />
       </div>
 
-      <main className="pt-16 pb-8 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
+      <main className="pt-16 pb-8 bg-white dark:bg-black animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* Header */}
           <div className="mb-8">
