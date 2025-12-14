@@ -81,13 +81,13 @@ export function ImageLightbox({ images, rowId }: ImageLightboxProps) {
   };
 
   return (
-    <div ref={containerRef} className="flex items-center justify-center gap-2">
+    <div ref={containerRef} className="flex items-center justify-center">
       {/* First image as clickable preview with loading state */}
       <a
         href={images[0].url}
         data-src={images[0].url}
         data-sub-html={getSubHtml(images[0], 0)}
-        className="lightbox-item cursor-pointer relative"
+        className="lightbox-item cursor-pointer relative inline-block"
       >
         {!imageLoaded && !imageError && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100 dark:bg-gray-800 rounded">
@@ -97,7 +97,7 @@ export function ImageLightbox({ images, rowId }: ImageLightboxProps) {
         <img
           src={images[0].url}
           alt={images[0].caption || "Image"}
-          className={`w-10 h-8 object-cover rounded border border-gray-200 dark:border-gray-700 hover:opacity-80 transition-all duration-300 ${
+          className={`w-10 h-8 object-cover rounded-lg border border-gray-200 dark:border-gray-700 hover:opacity-80 transition-all duration-300 ${
             imageLoaded ? 'opacity-100' : 'opacity-0'
           }`}
           loading="lazy"
@@ -107,6 +107,13 @@ export function ImageLightbox({ images, rowId }: ImageLightboxProps) {
             setImageLoaded(true);
           }}
         />
+        
+        {/* Count badge inside image */}
+        {images.length > 1 && (
+          <span className="absolute bottom-0.5 right-0.5 bg-black/70 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-md backdrop-blur-sm">
+            +{images.length - 1}
+          </span>
+        )}
       </a>
 
       {/* Hidden images for gallery */}
@@ -122,13 +129,6 @@ export function ImageLightbox({ images, rowId }: ImageLightboxProps) {
           <img src={image.url} alt={image.caption || `Image ${index + 2}`} />
         </a>
       ))}
-
-      {/* Count badge */}
-      {images.length > 1 && (
-        <span className="text-xs text-muted-foreground">
-          +{images.length - 1}
-        </span>
-      )}
     </div>
   );
 }

@@ -63,7 +63,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <span
-            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded-lg px-2 py-1 transition-all inline-block min-w-[60px] text-center"
             data-testid="text-editable-cell"
           >
             {value || <span className="text-gray-400">—</span>}
@@ -105,7 +105,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <span
-            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded-lg px-2 py-1 transition-all inline-block min-w-[60px] text-center"
             data-testid="text-editable-cell"
           >
             {value || <span className="text-gray-400">—</span>}
@@ -161,7 +161,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <span
-            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded-lg px-2 py-1 transition-all inline-block min-w-[60px] text-center"
             data-testid="text-editable-cell"
           >
             {value || <span className="text-gray-400">—</span>}
@@ -202,7 +202,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <span
-          className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded px-2 py-1 transition-all inline-block min-w-[40px] text-center"
+          className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded-lg px-2 py-1 transition-all inline-block min-w-[40px] text-center"
           data-testid="text-editable-cell"
         >
           {value || <span className="text-gray-400">—</span>}
