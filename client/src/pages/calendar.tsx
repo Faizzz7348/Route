@@ -14,6 +14,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar as CalendarIcon, Plus, Edit, Trash2 } from "lucide-react";
+import '@fullcalendar/core/index.css';
+import '@fullcalendar/daygrid/index.css';
+import '@fullcalendar/timegrid/index.css';
 
 interface CalendarEvent {
   id: string;
@@ -161,6 +164,71 @@ export default function CalendarPage() {
 
   return (
     <>
+      <style>{`
+        /* Dark mode calendar styling */
+        .dark .fc {
+          --fc-border-color: rgba(255, 255, 255, 0.1);
+          --fc-page-bg-color: transparent;
+        }
+        
+        .dark .fc .fc-scrollgrid {
+          border-color: rgba(255, 255, 255, 0.1);
+          border-width: 1px;
+        }
+        
+        .dark .fc th {
+          background-color: rgba(17, 24, 39, 0.8);
+          border-color: rgba(255, 255, 255, 0.1);
+          border-width: 1px;
+          color: #9ca3af;
+        }
+        
+        .dark .fc td {
+          background-color: rgba(31, 41, 55, 0.6);
+          border-color: rgba(255, 255, 255, 0.08);
+          border-width: 1px;
+        }
+        
+        .dark .fc-daygrid-day-top {
+          color: #d1d5db;
+        }
+        
+        .dark .fc-col-header-cell-cushion {
+          color: #9ca3af;
+        }
+        
+        .dark .fc-daygrid-day-number {
+          color: #d1d5db;
+        }
+        
+        .dark .fc-day-today {
+          background-color: rgba(59, 130, 246, 0.1) !important;
+        }
+        
+        .dark .fc-button {
+          background-color: rgba(59, 130, 246, 0.8);
+          border-color: rgba(59, 130, 246, 0.5);
+          color: white;
+        }
+        
+        .dark .fc-button:hover {
+          background-color: rgba(37, 99, 235, 0.9);
+        }
+        
+        .dark .fc-button-active {
+          background-color: rgba(37, 99, 235, 1) !important;
+        }
+        
+        /* Light mode - thinner borders */
+        .fc .fc-scrollgrid {
+          border-width: 1px;
+        }
+        
+        .fc th,
+        .fc td {
+          border-width: 1px;
+        }
+      `}</style>
       <div className="animate-in fade-in duration-500">
         <Navigation 
           editMode={false}
