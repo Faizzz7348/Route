@@ -139,8 +139,8 @@ export function updateThemeColor(color: string): void {
   }
 }
 
-// Predefined theme colors - Material Design 2
+// Predefined theme colors - Match navigation background
 export const THEME_COLORS = {
-  light: '#1976D2',  // Blue 600 - Material Design Primary
-  dark: '#121212',   // Material Dark Background
+  light: '#ffffff',  // White - matches light mode background
+  dark: '#000000',   // Black - matches dark mode background
 } as const;
