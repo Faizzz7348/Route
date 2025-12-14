@@ -14,7 +14,7 @@ import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
-    <div className="min-h-screen pb-16 text-sm">
+    <div className="min-h-screen pb-16 text-sm bg-white dark:bg-black">
       <Switch>
         <Route path="/">
           {() => <TablePage />}
