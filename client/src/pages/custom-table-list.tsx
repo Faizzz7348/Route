@@ -266,9 +266,9 @@ export default function CustomTableList() {
   return (
     <>
       {/* Simple Header with Home Button */}
-      <nav className="sticky top-0 z-50 w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-white dark:bg-black shadow-lg">
+      <nav className="fixed top-0 left-0 right-0 z-[100] w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-white dark:bg-black shadow-lg" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="container mx-auto px-4">
-          <div className="flex h-14 items-center justify-between text-[12px]">
+          <div className="flex h-16 items-center justify-between text-[12px]">
             {/* Logo/Brand */}
             <div className="flex items-center space-x-2">
               <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
@@ -300,7 +300,7 @@ export default function CustomTableList() {
           </div>
         </div>
       </nav>
-      <main className="min-h-screen bg-white dark:bg-black pt-6 pb-20">
+      <main className="min-h-screen bg-white dark:bg-black pb-20" style={{ paddingTop: 'calc(4rem + env(safe-area-inset-top) + 1.5rem)' }}>
         <div className="max-w-7xl mx-auto px-6">
         {/* Action Bar */}
         <div className="flex justify-between items-center mb-6">
