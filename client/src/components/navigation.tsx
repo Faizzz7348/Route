@@ -115,60 +115,60 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
               </DropdownMenuTrigger>
             <DropdownMenuContent 
               align="end" 
-              className="w-56 bg-white/70 dark:bg-black/70 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-2xl"
+              className="w-56 bg-white/95 dark:bg-black/95 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_0_rgba(0,0,0,0.25)] rounded-2xl animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 duration-200"
             >
               {/* Saved Links */}
               <DropdownMenuItem 
                 onClick={onSavedLinks}
-                className="cursor-pointer"
+                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-amber-50 dark:hover:bg-amber-950/30 hover:scale-[1.02] active:scale-[0.98]"
                 data-testid="menu-saved-links"
               >
-                <Bookmark className="w-4 h-4 mr-2 text-amber-500 dark:text-amber-400" />
-                <span style={{fontSize: '10px'}}>Saved Links</span>
+                <Bookmark className="w-4 h-4 mr-2 text-amber-500 dark:text-amber-400 transition-transform duration-200 group-hover:scale-110" />
+                <span style={{fontSize: '10px'}} className="font-medium">Saved Links</span>
               </DropdownMenuItem>
 
               {/* Custom Tables */}
               <DropdownMenuItem 
                 onClick={() => navigate('/custom-tables')}
-                className="cursor-pointer"
+                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-purple-50 dark:hover:bg-purple-950/30 hover:scale-[1.02] active:scale-[0.98]"
                 data-testid="menu-custom-tables"
               >
-                <ListChecks className="w-4 h-4 mr-2 text-purple-500 dark:text-purple-400" />
-                <span style={{fontSize: '10px'}}>Custom Tables</span>
+                <ListChecks className="w-4 h-4 mr-2 text-purple-500 dark:text-purple-400 transition-transform duration-200 group-hover:scale-110" />
+                <span style={{fontSize: '10px'}} className="font-medium">Custom Tables</span>
               </DropdownMenuItem>
 
               {/* Calendar */}
               <DropdownMenuItem 
                 onClick={() => navigate('/calendar')}
-                className="cursor-pointer"
+                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:scale-[1.02] active:scale-[0.98]"
                 data-testid="menu-calendar"
               >
-                <Calendar className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400" />
-                <span style={{fontSize: '10px'}}>Calendar</span>
+                <Calendar className="w-4 h-4 mr-2 text-blue-500 dark:text-blue-400 transition-transform duration-200 group-hover:scale-110" />
+                <span style={{fontSize: '10px'}} className="font-medium">Calendar</span>
               </DropdownMenuItem>
 
               {/* Help Guide */}
               <DropdownMenuItem 
                 onClick={() => navigate('/help')}
-                className="cursor-pointer"
+                className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-green-50 dark:hover:bg-green-950/30 hover:scale-[1.02] active:scale-[0.98]"
                 data-testid="menu-help-guide"
               >
-                <BookOpen className="w-4 h-4 mr-2 text-green-600 dark:text-green-400" />
-                <span style={{fontSize: '10px'}}>User Guide</span>
+                <BookOpen className="w-4 h-4 mr-2 text-green-600 dark:text-green-400 transition-transform duration-200 group-hover:scale-110" />
+                <span style={{fontSize: '10px'}} className="font-medium">User Guide</span>
               </DropdownMenuItem>
 
-              <DropdownMenuSeparator className="bg-gray-200/50 dark:bg-gray-700/50" />
+              <DropdownMenuSeparator className="bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent my-2" />
 
               {/* Edit Mode Options */}
               {editMode ? (
                 <>
                   <DropdownMenuItem 
                     onClick={onAddRow}
-                    className="cursor-pointer"
+                    className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-[1.02] active:scale-[0.98]"
                     data-testid="menu-add-row"
                   >
-                    <Rows className="w-4 h-4 mr-2" />
-                    <span style={{fontSize: '10px'}}>Add Row</span>
+                    <Rows className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+                    <span style={{fontSize: '10px'}} className="font-medium">Add Row</span>
                   </DropdownMenuItem>
                   {onAddColumn && (
                     <DropdownMenuItem 
@@ -177,41 +177,41 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
                         const addColumnButton = document.querySelector('[data-testid="button-add-column"]') as HTMLButtonElement;
                         if (addColumnButton) addColumnButton.click();
                       }}
-                      className="cursor-pointer"
+                      className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-[1.02] active:scale-[0.98]"
                       data-testid="menu-add-column"
                     >
-                      <Plus className="w-4 h-4 mr-2" />
-                      <span style={{fontSize: '10px'}}>Add Column</span>
+                      <Plus className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+                      <span style={{fontSize: '10px'}} className="font-medium">Add Column</span>
                     </DropdownMenuItem>
                   )}
                   {onBulkColorEdit && (
                     <DropdownMenuItem 
                       onClick={onBulkColorEdit}
-                      className="cursor-pointer"
+                      className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-purple-50 dark:hover:bg-purple-950/30 hover:scale-[1.02] active:scale-[0.98]"
                       data-testid="menu-bulk-color"
                     >
-                      <Palette className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400" />
-                      <span style={{fontSize: '10px'}}>Set Color by Route</span>
+                      <Palette className="w-4 h-4 mr-2 text-purple-600 dark:text-purple-400 transition-transform duration-200 group-hover:scale-110" />
+                      <span style={{fontSize: '10px'}} className="font-medium">Set Color by Route</span>
                     </DropdownMenuItem>
                   )}
-                  <DropdownMenuSeparator className="bg-gray-200/50 dark:bg-gray-700/50" />
+                  <DropdownMenuSeparator className="bg-gradient-to-r from-transparent via-gray-300 dark:via-gray-600 to-transparent my-2" />
                   <DropdownMenuItem 
                     onClick={onEditModeRequest}
-                    className="cursor-pointer text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
+                    className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-950/30 hover:scale-[1.02] active:scale-[0.98] text-red-600 dark:text-red-400 focus:text-red-600 dark:focus:text-red-400"
                     data-testid="menu-exit-edit"
                   >
-                    <DoorOpen className="w-4 h-4 mr-2" />
-                    <span style={{fontSize: '10px'}}>Exit Edit Mode</span>
+                    <DoorOpen className="w-4 h-4 mr-2 transition-transform duration-200 group-hover:scale-110" />
+                    <span style={{fontSize: '10px'}} className="font-medium">Exit Edit Mode</span>
                   </DropdownMenuItem>
                 </>
               ) : (
                 <DropdownMenuItem 
                   onClick={onEditModeRequest}
-                  className="cursor-pointer"
+                  className="cursor-pointer rounded-lg mx-1 my-0.5 transition-all duration-200 hover:bg-red-50 dark:hover:bg-red-950/30 hover:scale-[1.02] active:scale-[0.98]"
                   data-testid="menu-enter-edit"
                 >
-                  <Settings className="w-4 h-4 mr-2 text-red-900 dark:text-red-400" />
-                  <span style={{fontSize: '10px'}}>Edit Mode</span>
+                  <Settings className="w-4 h-4 mr-2 text-red-900 dark:text-red-400 transition-transform duration-200 group-hover:scale-110" />
+                  <span style={{fontSize: '10px'}} className="font-medium">Edit Mode</span>
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
