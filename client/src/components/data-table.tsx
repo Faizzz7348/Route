@@ -363,7 +363,9 @@ export function DataTable({
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
   };
   const handleDragEnd = (result: any) => {
+    // Quick exit if no destination or no movement
     if (!result.destination) return;
+    if (result.destination.index === result.source.index) return;
 
     const { source, destination, type } = result;
 
@@ -375,12 +377,16 @@ export function DataTable({
       const columnIds = newColumnOrder.map((col) => col.id);
       onReorderColumns.mutate(columnIds);
     } else if (type === "row") {
+      // Optimize by using direct array manipulation
       const newRowOrder = Array.from(rows);
       const [reorderedRow] = newRowOrder.splice(source.index, 1);
       newRowOrder.splice(destination.index, 0, reorderedRow);
 
-      const rowIds = newRowOrder.map((row) => row.id);
-      onReorderRows.mutate(rowIds);
+      // Use requestAnimationFrame for smoother UI updates
+      requestAnimationFrame(() => {
+        const rowIds = newRowOrder.map((row) => row.id);
+        onReorderRows.mutate(rowIds);
+      });
     }
   };
 

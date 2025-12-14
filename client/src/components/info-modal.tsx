@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Info, ListChecks, QrCode, ExternalLink, CheckCircle, Save, X, FileText, Loader2 } from "lucide-react";
+import { Info, ListChecks, QrCode, ExternalLink, CheckCircle, Save, X, FileText, Loader2, Upload, Image as ImageIcon } from "lucide-react";
 import { SiGooglemaps, SiWaze } from "react-icons/si";
 import { MiniMap } from "@/components/mini-map";
 import { SlidingDescription } from "@/components/sliding-description";
@@ -41,6 +41,8 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
   const [showSaveConfirm, setShowSaveConfirm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [isUploadingQr, setIsUploadingQr] = useState(false);
+  const [qrPreview, setQrPreview] = useState<string>("");
   
   // State for tracking edits
   const [originalData, setOriginalData] = useState({ info: "", qrCode: "", latitude: "", longitude: "", markerColor: "" });
@@ -58,6 +60,12 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
       };
       setOriginalData(data);
       setCurrentData(data);
+      // Set preview if qrCode exists and is a base64 image
+      if (qrCode && qrCode.startsWith('data:')) {
+        setQrPreview(qrCode);
+      } else {
+        setQrPreview("");
+      }
     }
   }, [open, info, qrCode, latitude, longitude, markerColor]);
   
@@ -171,6 +179,50 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
   const handleCancelNavigation = () => {
     setShowConfirmDialog(false);
     setScannedResult("");
+  };
+
+  const handleQrImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Check if file is an image
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file');
+      return;
+    }
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size should be less than 5MB');
+      return;
+    }
+
+    setIsUploadingQr(true);
+
+    try {
+      // Convert to base64 for preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setQrPreview(base64String);
+        setCurrentData(prev => ({ ...prev, qrCode: base64String }));
+        setIsUploadingQr(false);
+      };
+      reader.onerror = () => {
+        alert('Failed to read file');
+        setIsUploadingQr(false);
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Failed to upload image');
+      setIsUploadingQr(false);
+    }
+  };
+
+  const handleRemoveQrImage = () => {
+    setQrPreview("");
+    setCurrentData(prev => ({ ...prev, qrCode: "" }));
   };
 
   const handleUrlClick = (url: string) => {
@@ -486,17 +538,96 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
             <div className="bg-transparent backdrop-blur-sm rounded-xl p-4 space-y-3 shadow-sm">
               <div className="flex items-center gap-2">
                 <div className="w-2 h-2 bg-purple-500 dark:bg-purple-400 rounded-full"></div>
-                <h4 className="font-semibold text-purple-600 dark:text-purple-400" style={{fontSize: '10px'}}><QrCode className="w-4 h-4 inline mr-1" />QR Code URL</h4>
+                <h4 className="font-semibold text-purple-600 dark:text-purple-400" style={{fontSize: '10px'}}><QrCode className="w-4 h-4 inline mr-1" />QR Code</h4>
               </div>
-              <div className="space-y-2">
-                <Input
-                  value={currentData.qrCode}
-                  onChange={(e) => setCurrentData(prev => ({ ...prev, qrCode: e.target.value }))}
-                  placeholder="Enter QR code image URL..."
-                  style={{fontSize: '10px'}}
-                  data-testid="input-qr-code"
-                />
-                <p className="text-muted-foreground" style={{fontSize: '10px'}}>URL to the QR code image</p>
+              <div className="space-y-3">
+                {/* URL Input */}
+                <div className="space-y-2">
+                  <Label style={{fontSize: '10px'}}>QR Code URL</Label>
+                  <Input
+                    value={currentData.qrCode.startsWith('data:') ? '' : currentData.qrCode}
+                    onChange={(e) => {
+                      setCurrentData(prev => ({ ...prev, qrCode: e.target.value }));
+                      setQrPreview("");
+                    }}
+                    placeholder="Enter QR code image URL..."
+                    style={{fontSize: '10px'}}
+                    data-testid="input-qr-code"
+                    disabled={!!qrPreview || currentData.qrCode.startsWith('data:')}
+                  />
+                  <p className="text-muted-foreground" style={{fontSize: '9px'}}>Enter a URL to the QR code image</p>
+                </div>
+
+                {/* Divider */}
+                <div className="flex items-center gap-2">
+                  <div className="flex-1 border-t border-border"></div>
+                  <span className="text-muted-foreground" style={{fontSize: '9px'}}>OR</span>
+                  <div className="flex-1 border-t border-border"></div>
+                </div>
+
+                {/* Upload Button */}
+                <div className="space-y-2">
+                  <Label style={{fontSize: '10px'}}>Upload QR Code Image</Label>
+                  <div className="flex items-center gap-2">
+                    <label htmlFor="qr-upload" className="flex-1">
+                      <div className={`flex items-center justify-center gap-2 px-4 py-2 border-2 border-dashed rounded-lg cursor-pointer transition-colors ${
+                        isUploadingQr ? 'border-blue-400 bg-blue-50 dark:bg-blue-950' : 'border-purple-300 dark:border-purple-700 hover:border-purple-400 dark:hover:border-purple-600 hover:bg-purple-50 dark:hover:bg-purple-950'
+                      }`}>
+                        {isUploadingQr ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
+                            <span style={{fontSize: '10px'}} className="text-blue-600 dark:text-blue-400">Uploading...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                            <span style={{fontSize: '10px'}} className="text-purple-600 dark:text-purple-400">Choose Image</span>
+                          </>
+                        )}
+                      </div>
+                      <input
+                        id="qr-upload"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleQrImageUpload}
+                        className="hidden"
+                        disabled={isUploadingQr || (!!currentData.qrCode && !currentData.qrCode.startsWith('data:'))}
+                      />
+                    </label>
+                  </div>
+                  <p className="text-muted-foreground" style={{fontSize: '9px'}}>Upload an image file (max 5MB)</p>
+                </div>
+
+                {/* Preview */}
+                {(qrPreview || currentData.qrCode) && (
+                  <div className="relative border-2 border-purple-200 dark:border-purple-800 rounded-lg p-2 bg-purple-50/50 dark:bg-purple-950/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <ImageIcon className="w-3 h-3 text-purple-600 dark:text-purple-400" />
+                      <span style={{fontSize: '9px'}} className="text-purple-600 dark:text-purple-400 font-medium">
+                        {currentData.qrCode.startsWith('data:') ? 'Uploaded Image' : 'Image URL'}
+                      </span>
+                    </div>
+                    <div className="relative">
+                      <img 
+                        src={qrPreview || currentData.qrCode} 
+                        alt="QR Code Preview" 
+                        className="w-full h-32 object-contain rounded bg-white dark:bg-gray-900"
+                        onError={(e) => {
+                          e.currentTarget.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><text x="50%" y="50%" text-anchor="middle" dy=".3em" fill="gray" font-size="12">Invalid Image</text></svg>';
+                        }}
+                      />
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        onClick={handleRemoveQrImage}
+                        className="absolute top-1 right-1 h-6 w-6 p-0 rounded-full"
+                        title="Remove image"
+                      >
+                        <X className="w-3 h-3" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -538,9 +669,116 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
               </div>
               <p className="text-muted-foreground" style={{fontSize: '10px'}}>GPS coordinates for map location</p>
               
-              {/* Marker Color Picker */}
+              {/* Marker Color Presets by Route */}
+              <div className="space-y-3 pt-3 border-t border-purple-200/50 dark:border-purple-800/50">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-purple-500 dark:bg-purple-400 rounded-full"></div>
+                  <h4 className="font-semibold text-purple-600 dark:text-purple-400" style={{fontSize: '10px'}}>🎨 Quick Color Presets</h4>
+                </div>
+                <div className="grid grid-cols-4 gap-2">
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#3b82f6' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-950/50 transition-all duration-200 border-2 border-transparent hover:border-blue-300 dark:hover:border-blue-700"
+                    title="Blue - Default"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#3b82f6'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Blue</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#ef4444' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/50 transition-all duration-200 border-2 border-transparent hover:border-red-300 dark:hover:border-red-700"
+                    title="Red - KL4"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#ef4444'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Red</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#22c55e' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-green-50 dark:hover:bg-green-950/50 transition-all duration-200 border-2 border-transparent hover:border-green-300 dark:hover:border-green-700"
+                    title="Green - KL6"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#22c55e'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Green</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#f97316' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-950/50 transition-all duration-200 border-2 border-transparent hover:border-orange-300 dark:hover:border-orange-700"
+                    title="Orange - KL3"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#f97316'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Orange</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#8b5cf6' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-violet-50 dark:hover:bg-violet-950/50 transition-all duration-200 border-2 border-transparent hover:border-violet-300 dark:hover:border-violet-700"
+                    title="Violet - KL1"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#8b5cf6'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Violet</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#eab308' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-yellow-50 dark:hover:bg-yellow-950/50 transition-all duration-200 border-2 border-transparent hover:border-yellow-300 dark:hover:border-yellow-700"
+                    title="Yellow - KL5"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#eab308'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Yellow</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#6366f1' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-950/50 transition-all duration-200 border-2 border-transparent hover:border-indigo-300 dark:hover:border-indigo-700"
+                    title="Indigo - KL7"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#6366f1'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Indigo</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#64748b' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-950/50 transition-all duration-200 border-2 border-transparent hover:border-gray-300 dark:hover:border-gray-700"
+                    title="Gray - Others"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#64748b'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Gray</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#ec4899' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-pink-50 dark:hover:bg-pink-950/50 transition-all duration-200 border-2 border-transparent hover:border-pink-300 dark:hover:border-pink-700"
+                    title="Pink - Special"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#ec4899'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Pink</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#14b8a6' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-950/50 transition-all duration-200 border-2 border-transparent hover:border-teal-300 dark:hover:border-teal-700"
+                    title="Teal - Alternate"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#14b8a6'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Teal</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#f59e0b' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-amber-50 dark:hover:bg-amber-950/50 transition-all duration-200 border-2 border-transparent hover:border-amber-300 dark:hover:border-amber-700"
+                    title="Amber - SL1"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md" style={{backgroundColor: '#f59e0b'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Amber</span>
+                  </button>
+                  <button
+                    onClick={() => setCurrentData(prev => ({ ...prev, markerColor: '#000000' }))}
+                    className="flex flex-col items-center gap-1 p-2 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-200 border-2 border-transparent hover:border-gray-400 dark:hover:border-gray-600"
+                    title="Black - Warehouse"
+                  >
+                    <div className="w-8 h-8 rounded-full shadow-md border border-gray-300 dark:border-gray-600" style={{backgroundColor: '#000000'}}></div>
+                    <span style={{fontSize: '8px'}} className="text-gray-600 dark:text-gray-400">Black</span>
+                  </button>
+                </div>
+                <p className="text-muted-foreground" style={{fontSize: '9px'}}>Click a color preset or use custom color below</p>
+              </div>
+
+              {/* Custom Marker Color Picker */}
               <div className="space-y-2 pt-3">
-                <Label htmlFor="markerColor" style={{fontSize: '10px'}}>🎨 Marker Color</Label>
+                <Label htmlFor="markerColor" style={{fontSize: '10px'}}>🎨 Custom Marker Color</Label>
                 <div className="flex items-center gap-3">
                   <Input
                     id="markerColor"
@@ -560,7 +798,7 @@ export function InfoModal({ info, rowId, code, route, location, latitude, longit
                     pattern="^#[0-9A-Fa-f]{6}$"
                   />
                 </div>
-                <p className="text-muted-foreground" style={{fontSize: '10px'}}>Custom color for map marker pin</p>
+                <p className="text-muted-foreground" style={{fontSize: '10px'}}>Enter any hex color code for custom marker pin</p>
               </div>
               
               {/* Save/Cancel Buttons - Right below coordinates */}
