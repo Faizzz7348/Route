@@ -1091,9 +1091,9 @@ export function DataTable({
           </div>
         </div>
       )}
-      <div className="overflow-x-auto w-full">
+      <div className="relative w-full overflow-auto max-h-[calc(100vh-320px)] border rounded-2xl">
         <DragDropContext onDragEnd={handleDragEnd}>
-          <Table className="min-w-full">
+          <Table className="min-w-full relative">
             <TableHeader className="table-header-glass sticky top-0 z-20 bg-white dark:bg-slate-900 border-b-2 border-yellow-400/30">
               <Droppable
                 droppableId="columns"
@@ -1661,7 +1661,7 @@ export function DataTable({
               )}
             </Droppable>
             <tfoot>
-              <TableRow>
+              <TableRow className="sticky bottom-0 z-10 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)]">
                 {visibleColumns.map((column, index) => (
                   <TableCell
                     key={column.id}
