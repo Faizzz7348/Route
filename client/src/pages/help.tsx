@@ -1,283 +1,201 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { 
-  BookOpen, 
-  Home, 
-  Table2, 
-  Edit3, 
-  Route, 
-  Map, 
-  Image, 
-  Truck, 
-  Share2,
-  Lightbulb,
-  Play,
-  Keyboard,
-  AlertCircle,
-  Database
-} from "lucide-react";
-import { Link } from "wouter";
+import { useState, useEffect } from "react";
+import { Bot, ArrowLeft, Sun, Moon, Sparkles, MessageCircle, Zap, Shield, Globe } from "lucide-react";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { HelpChatbot } from "@/components/help-chatbot";
+import { useTheme } from "@/components/theme-provider";
 
 export default function HelpPage() {
+  const [, setLocation] = useLocation();
+  const [showChatbot, setShowChatbot] = useState(false);
+  const { theme, toggleTheme } = useTheme();
+
+  // Auto-open chatbot when page loads
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowChatbot(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const features = [
+    {
+      icon: <MessageCircle className="w-6 h-6" />,
+      title: "Natural Conversations",
+      description: "Ask questions in your own words - the AI understands context and intent"
+    },
+    {
+      icon: <Globe className="w-6 h-6" />,
+      title: "Multi-Language Support",
+      description: "Switch between English, Bahasa Melayu, Tamil, and Chinese seamlessly"
+    },
+    {
+      icon: <Zap className="w-6 h-6" />,
+      title: "Instant Responses",
+      description: "Get immediate answers with detailed explanations and step-by-step guides"
+    },
+    {
+      icon: <Shield className="w-6 h-6" />,
+      title: "Always Available",
+      description: "24/7 assistance for all your questions about the route management system"
+    }
+  ];
+
   return (
-    <div className="min-h-screen w-full bg-white dark:bg-black">
-      <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-              <BookOpen className="h-6 w-6 text-blue-400" />
+    <>
+      {/* Header */}
+      <nav className="fixed top-0 left-0 right-0 z-[100] w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-white dark:bg-black shadow-lg" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+        <div className="container mx-auto px-4">
+          <div className="flex h-16 items-center justify-between text-[12px]">
+            {/* Logo/Brand */}
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg overflow-hidden">
+                  <img 
+                    src="/assets/FamilyMart.png" 
+                    alt="Logo" 
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-bold text-slate-600 dark:text-slate-300" style={{ fontSize: '12px' }}>AI Help Assistant</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Advanced chatbot powered by AI</span>
+                </div>
+              </div>
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-              User Guide
-            </h1>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center gap-2">
+              {/* Theme Toggle Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleTheme}
+                className="btn-glass w-8 h-8 p-0 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-amber-500/20 active:scale-95 active:shadow-none"
+                data-testid="button-toggle-theme"
+                title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-4 h-4 text-yellow-500 transition-all duration-300" />
+                ) : (
+                  <Moon className="w-4 h-4 text-blue-500 transition-all duration-300" />
+                )}
+              </Button>
+              
+              {/* Back Button */}
+              <Button
+                onClick={() => setLocation("/")}
+                variant="outline"
+                size="sm"
+                className="btn-glass w-8 h-8 p-0 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 active:shadow-none"
+                title="Back to Home"
+              >
+                <ArrowLeft className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
+              </Button>
+            </div>
           </div>
-          <Link href="/">
-            <Button variant="outline" size="sm" className="gap-2">
-              <Home className="h-4 w-4" />
-              Back
-            </Button>
-          </Link>
         </div>
+      </nav>
 
-        <Card className="bg-slate-900/50 border-slate-800 backdrop-blur-sm">
-          <CardHeader>
-            <CardTitle className="text-slate-100 flex items-center gap-2">
-              <Database className="h-5 w-5 text-blue-400" />
-              Welcome to the Route Management System
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[calc(100vh-250px)] pr-4">
-              <div className="space-y-6 text-slate-300 leading-relaxed text-sm">
-                
-                <section>
-                  <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
-                    <BookOpen className="h-4 w-4 text-blue-400" />
-                    What is This App?
-                  </h2>
-                  <p className="text-sm">
-                    This is a comprehensive delivery route management system designed to help you efficiently manage 
-                    delivery location data. You can organize, edit, and optimize delivery routes with ease using an 
-                    interactive drag-and-drop interface. The system is built to streamline your logistics operations 
-                    and improve delivery efficiency.
-                  </p>
-                </section>
+      <main className="min-h-screen bg-white dark:bg-black" style={{ paddingTop: 'calc(4rem + env(safe-area-inset-top) + 2rem)', paddingBottom: '2rem' }}>
+        <div className="container mx-auto px-4 max-w-5xl">
+          {/* Hero Section */}
+          <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
+            <div className="inline-flex items-center justify-center p-4 rounded-2xl bg-gradient-to-br from-blue-500 to-purple-600 shadow-2xl mb-6">
+              <Bot className="w-12 h-12 text-white" />
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 dark:from-blue-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+              AI Help Assistant
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8">
+              Your intelligent companion for navigating the Route Management System. Get instant answers, step-by-step guides, and expert tips in multiple languages.
+            </p>
+            
+            {/* CTA Button */}
+            <Button
+              onClick={() => setShowChatbot(true)}
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 rounded-xl px-8 py-6 text-lg"
+            >
+              <Sparkles className="w-5 h-5 mr-2" />
+              Start Chatting Now
+            </Button>
+          </div>
 
-                <section>
-                  <h2 className="text-lg font-semibold text-slate-100 mb-3">Key Features</h2>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
-                        <Table2 className="h-4 w-4" />
-                        1. Table Management
-                      </h3>
-                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                        <li>Add, edit, and delete location data rows</li>
-                        <li>Drag-and-drop to reorder entries</li>
-                        <li>Show/hide columns based on your needs</li>
-                        <li>Search and filter to quickly find data</li>
-                        <li>Real-time calculations and statistics</li>
-                      </ul>
+          {/* Features Grid */}
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            {features.map((feature, index) => (
+              <Card 
+                key={index} 
+                className="bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-gray-200 dark:border-gray-700 hover:shadow-xl transition-all duration-300 hover:scale-105 animate-in fade-in slide-in-from-bottom-4"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <CardContent className="p-6">
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">
+                      {feature.icon}
                     </div>
-
                     <div>
-                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
-                        <Edit3 className="h-4 w-4" />
-                        2. Edit Mode
+                      <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">
+                        {feature.title}
                       </h3>
-                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                        <li>Click the menu button (☰) and select "Enter Edit Mode"</li>
-                        <li>Add, modify, or delete data while in edit mode</li>
-                        <li>Drag-and-drop to rearrange columns</li>
-                        <li>Customize marker colors for map visualization</li>
-                        <li>Click "Exit Edit Mode" when finished</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
-                        <Route className="h-4 w-4" />
-                        3. Route Optimization
-                      </h3>
-                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                        <li>Click "Optimize Route" to calculate optimal delivery sequences</li>
-                        <li>System automatically calculates distances and arranges the shortest routes</li>
-                        <li>Supports Heavy Goods Vehicle (HGV/Lorry) routing profiles</li>
-                        <li>View distances in kilometers from your base location (QL Kitchen)</li>
-                        <li>Batch processing with intelligent rate limiting</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
-                        <Map className="h-4 w-4" />
-                        4. Map View
-                      </h3>
-                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                        <li>Click the info icon (ⓘ) to view locations on the map</li>
-                        <li>Marker colors can be customized in edit mode</li>
-                        <li>Fullscreen map view for better visualization</li>
-                        <li>Automatic route calculation from base location</li>
-                        <li>Interactive markers with location details</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
-                        <Image className="h-4 w-4" />
-                        5. Image Gallery
-                      </h3>
-                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                        <li>Upload images for each location</li>
-                        <li>Support for multiple images per location</li>
-                        <li>Lightbox view to see images in full size</li>
-                        <li>Upload from your device or enter image URLs</li>
-                        <li>Support for various image formats and large files</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
-                        <Truck className="h-4 w-4" />
-                        6. Delivery Alternate System
-                      </h3>
-                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                        <li>4 delivery states: Normal, Alt 1, Alt 2, Inactive</li>
-                        <li>Alt 1: Deliveries on Monday/Wednesday/Friday/Sunday</li>
-                        <li>Alt 2: Deliveries on Tuesday/Thursday/Saturday</li>
-                        <li>Automatic sorting based on current day</li>
-                        <li>Color-coded visual indicators for each state</li>
-                        <li>Off-schedule entries displayed with reduced brightness</li>
-                      </ul>
-                    </div>
-
-                    <div>
-                      <h3 className="font-semibold text-blue-400 mb-2 flex items-center gap-2 text-sm">
-                        <Share2 className="h-4 w-4" />
-                        7. Share Table
-                      </h3>
-                      <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                        <li>Click "Share Table" to generate a shareable link</li>
-                        <li>Save links with custom names for easy reference</li>
-                        <li>Share links with team members for view-only access</li>
-                        <li>Access saved links from the menu</li>
-                        <li>Shared tables maintain your current filters and column visibility</li>
-                      </ul>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {feature.description}
+                      </p>
                     </div>
                   </div>
-                </section>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-                <section>
-                  <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
-                    <Lightbulb className="h-4 w-4 text-yellow-400" />
-                    Usage Tips
-                  </h2>
-                  <ul className="list-disc list-inside space-y-2 ml-4 text-sm">
-                    <li>
-                      <span className="font-semibold">Default Columns:</span> By default, only 4 columns 
-                      are displayed (No, Code, Location, Delivery). Use "Show/Hide Columns" to 
-                      toggle additional columns.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Drag Handle:</span> Use the drag icon (⋮⋮) on the left 
-                      side of each row to drag-and-drop and reorder entries.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Search:</span> Use the search box to quickly find data. 
-                      Search works across all visible columns.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Filters:</span> Filter by Route or Delivery status 
-                      using the dropdown filters for focused views.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Calculations:</span> The "Totals" row at the bottom 
-                      automatically calculates sum/count based on visible data (after filters/search).
-                    </li>
-                    <li>
-                      <span className="font-semibold">Inactive Rows:</span> Toggle the active/inactive state 
-                      to temporarily hide locations. Inactive rows automatically sort to the bottom.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Header Content:</span> Slide left/right to view 
-                      different header pages if multiple pages are configured.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Layout Preferences:</span> Your column visibility and order 
-                      preferences are saved per user and persist across sessions.
-                    </li>
-                  </ul>
-                </section>
+          {/* Info Cards */}
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/30 dark:to-blue-900/30 border-blue-200 dark:border-blue-800">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">4</div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Languages Supported</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/30 dark:to-purple-900/30 border-purple-200 dark:border-purple-800">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">24/7</div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Always Available</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-gradient-to-br from-pink-50 to-pink-100 dark:from-pink-950/30 dark:to-pink-900/30 border-pink-200 dark:border-pink-800">
+              <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-pink-600 dark:text-pink-400 mb-2">∞</div>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Unlimited Questions</p>
+              </CardContent>
+            </Card>
+          </div>
 
-                <section>
-                  <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
-                    <Play className="h-4 w-4 text-green-400" />
-                    Getting Started
-                  </h2>
-                  <ol className="list-decimal list-inside space-y-2 ml-4 text-sm">
-                    <li>Browse the existing table data to familiarize yourself with the interface</li>
-                    <li>Use search and filters to explore the data</li>
-                    <li>Click the menu button (☰) to access additional options</li>
-                    <li>Enter Edit Mode to make changes to the data</li>
-                    <li>Try drag-and-drop to reorder rows and customize your view</li>
-                    <li>Click the info icon (ⓘ) to view locations on the map</li>
-                    <li>Use "Optimize Route" to calculate efficient delivery sequences</li>
-                    <li>Exit Edit Mode when you're done making changes</li>
-                  </ol>
-                </section>
+          {/* Bottom CTA */}
+          <div className="mt-12 text-center p-8 rounded-2xl bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 dark:from-blue-500/20 dark:via-purple-500/20 dark:to-pink-500/20 border border-blue-200 dark:border-blue-800">
+            <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+              Ready to Get Started?
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Click the button below to open the AI assistant and start asking questions!
+            </p>
+            <Button
+              onClick={() => setShowChatbot(true)}
+              size="lg"
+              className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 rounded-xl"
+            >
+              <Bot className="w-5 h-5 mr-2" />
+              Open AI Assistant
+            </Button>
+          </div>
+        </div>
+      </main>
 
-                <section>
-                  <h2 className="text-lg font-semibold text-slate-100 mb-3 flex items-center gap-2">
-                    <Keyboard className="h-4 w-4 text-purple-400" />
-                    Keyboard Shortcuts
-                  </h2>
-                  <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                    <li><kbd className="px-2 py-1 text-xs bg-slate-800 rounded border border-slate-700">Esc</kbd> - Close modal/dialog windows</li>
-                    <li><kbd className="px-2 py-1 text-xs bg-slate-800 rounded border border-slate-700">Enter</kbd> - Submit forms and confirm actions</li>
-                  </ul>
-                </section>
-
-                <section className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                  <h2 className="text-lg font-semibold text-blue-400 mb-2 flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4" />
-                    Important Notes
-                  </h2>
-                  <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                    <li><span className="font-semibold">Route Optimization:</span> Uses OpenRouteService API for commercial vehicle routing</li>
-                    <li><span className="font-semibold">Toll Information:</span> Toll prices are not available and will display as 0</li>
-                    <li><span className="font-semibold">Rate Limits:</span> Free tier allows 40 requests per minute, 2000 requests per day</li>
-                    <li><span className="font-semibold">Batch Processing:</span> For routes with many locations, the system processes requests sequentially to respect rate limits</li>
-                    <li><span className="font-semibold">Data Privacy:</span> Your layout preferences and settings are stored locally per user</li>
-                  </ul>
-                </section>
-
-                <section className="bg-green-500/10 border border-green-500/20 rounded-lg p-4">
-                  <h2 className="text-lg font-semibold text-green-400 mb-2">Best Practices</h2>
-                  <ul className="list-disc list-inside space-y-1 ml-4 text-sm">
-                    <li>Regularly save your work using the "Save Layout" option</li>
-                    <li>Use descriptive names when saving share links for easy identification</li>
-                    <li>Keep location coordinates accurate for optimal route calculations</li>
-                    <li>Use the delivery alternate system to organize regular delivery schedules</li>
-                    <li>Take advantage of filters to focus on specific routes or delivery types</li>
-                  </ul>
-                </section>
-
-                <section>
-                  <p className="text-center text-slate-400 italic mt-8 text-sm">
-                    For technical support or questions, please contact your system administrator.
-                  </p>
-                  <p className="text-center text-slate-500 text-xs mt-4">
-                    Route Management System • Version 1.0.0
-                  </p>
-                </section>
-
-              </div>
-            </ScrollArea>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+      {/* Chatbot Modal */}
+      <HelpChatbot open={showChatbot} onOpenChange={setShowChatbot} />
+    </>
   );
 }

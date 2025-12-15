@@ -13,7 +13,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Share2, Trash2, Copy, Check, Home, Edit } from "lucide-react";
+import { Plus, Share2, Trash2, Copy, Check, ArrowLeft, Edit, Sun, Moon } from "lucide-react";
 import type { TableRow, CustomTable } from "@shared/schema";
 import { Footer } from "@/components/footer";
 import { LoadingOverlay } from "@/components/skeleton-loader";
@@ -286,17 +286,35 @@ export default function CustomTableList() {
               </div>
             </div>
 
-            {/* Home Button */}
-            <Button
-              onClick={() => setLocation("/")}
-              variant="outline"
-              size="sm"
-              className="btn-glass w-8 h-8 md:w-auto md:h-9 p-0 md:px-3 pagination-button group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 active:shadow-none"
-              title="Home"
-            >
-              <Home className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
-              <span className="hidden md:inline ml-2 text-xs transition-all duration-300">Home</span>
-            </Button>
+            {/* Navigation Buttons */}
+            <div className="flex items-center gap-2">
+              {/* Theme Toggle Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleTheme}
+                className="btn-glass w-8 h-8 p-0 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-amber-500/20 active:scale-95 active:shadow-none"
+                data-testid="button-toggle-theme"
+                title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-4 h-4 text-yellow-500 transition-all duration-300" />
+                ) : (
+                  <Moon className="w-4 h-4 text-blue-500 transition-all duration-300" />
+                )}
+              </Button>
+              
+              {/* Back Button */}
+              <Button
+                onClick={() => setLocation("/")}
+                variant="outline"
+                size="sm"
+                className="btn-glass w-8 h-8 p-0 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 active:shadow-none"
+                title="Back to Home"
+              >
+                <ArrowLeft className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
+              </Button>
+            </div>
           </div>
         </div>
       </nav>

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { useTheme } from "@/components/theme-provider";
+import { useLocation } from "wouter";
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar as CalendarIcon, Plus, Edit, Trash2 } from "lucide-react";
+import { Calendar as CalendarIcon, Plus, Edit, Trash2, ArrowLeft, Sun, Moon } from "lucide-react";
 
 interface CalendarEvent {
   id: string;
@@ -28,6 +28,7 @@ interface CalendarEvent {
 export default function CalendarPage() {
   const { theme, toggleTheme } = useTheme();
   const { toast } = useToast();
+  const [, setLocation] = useLocation();
   const [events, setEvents] = useState<CalendarEvent[]>([]);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(null);
@@ -282,15 +283,62 @@ export default function CalendarPage() {
           color: #f3f4f6;
         }
       `}</style>
-      <div className="animate-in fade-in duration-500">
-        <Navigation 
-          editMode={false}
-          theme={theme}
-          onToggleTheme={toggleTheme}
-        />
-      </div>
 
-      <main className="pt-16 pb-8 bg-white dark:bg-black animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
+      {/* Simple Header with Back and Theme Buttons */}
+      <nav className="fixed top-0 left-0 right-0 z-[100] w-full border-b-2 border-blue-500/50 dark:border-blue-400/50 bg-white dark:bg-black shadow-lg" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+        <div className="container mx-auto px-4">
+          <div className="flex h-16 items-center justify-between text-[12px]">
+            {/* Logo/Brand */}
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg overflow-hidden">
+                  <img 
+                    src="/assets/FamilyMart.png" 
+                    alt="Logo" 
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-bold text-slate-600 dark:text-slate-300" style={{ fontSize: '12px' }}>Calendar</span>
+                  <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Schedule & Events</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex items-center gap-2">
+              {/* Theme Toggle Button */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleTheme}
+                className="btn-glass w-8 h-8 p-0 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-amber-500/20 active:scale-95 active:shadow-none"
+                data-testid="button-toggle-theme"
+                title={theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+              >
+                {theme === 'dark' ? (
+                  <Sun className="w-4 h-4 text-yellow-500 transition-all duration-300" />
+                ) : (
+                  <Moon className="w-4 h-4 text-blue-500 transition-all duration-300" />
+                )}
+              </Button>
+              
+              {/* Back Button */}
+              <Button
+                onClick={() => setLocation("/")}
+                variant="outline"
+                size="sm"
+                className="btn-glass w-8 h-8 p-0 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-blue-500/20 active:scale-95 active:shadow-none"
+                title="Back to Home"
+              >
+                <ArrowLeft className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-all duration-300" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <main className="bg-white dark:bg-black animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150" style={{ paddingTop: 'calc(4rem + env(safe-area-inset-top) + 2rem)', paddingBottom: '2rem' }}>
         <div className="container mx-auto px-4 py-8 max-w-7xl">
           {/* Header */}
           <div className="mb-8">
