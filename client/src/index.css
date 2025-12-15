@@ -62,20 +62,20 @@ textarea {
 
 :root {
   /* ==========================================
-     Ocean Deep Blue Dark Theme
+     Standard Light Theme Colors
      ========================================== */
   
-  /* Ocean Deep Blue Colors */
-  --ocean-deep: #0a1929;      /* Dark background */
-  --ocean-blue: #132f4c;      /* Medium dark */
-  --ocean-medium: #1e4976;    /* Medium */
-  --ocean-light: #2e5a8e;     /* Light */
-  --ocean-accent: #4fc3f7;    /* Bright cyan */
-  --ocean-bright: #81d4fa;    /* Very bright */
-  --text-primary: #e3f2fd;    /* Light text */
-  --text-secondary: #90caf9;  /* Secondary text */
-  --border-color: rgba(79, 195, 247, 0.2);
-  --highlight: #29b6f6;
+  /* Standard Light Colors */
+  --ocean-deep: #ffffff;      /* White background */
+  --ocean-blue: #f8f9fa;      /* Light gray */
+  --ocean-medium: #e9ecef;    /* Medium gray */
+  --ocean-light: #dee2e6;     /* Border gray */
+  --ocean-accent: #0d6efd;    /* Standard blue */
+  --ocean-bright: #0d6efd;    /* Standard blue */
+  --text-primary: #212529;    /* Dark text */
+  --text-secondary: #6c757d;  /* Gray text */
+  --border-color: rgba(0, 0, 0, 0.1);
+  --highlight: #0d6efd;
   
   /* Transitions */
   --transition-fast: 0.2s ease;
@@ -83,48 +83,48 @@ textarea {
   --transition-slow: 0.5s ease;
   
   /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
   
-  /* Radix UI Variables - Ocean Theme */
-  --background: #0a1929;
-  --foreground: #e3f2fd;
-  --card: #132f4c;
-  --card-foreground: #e3f2fd;
-  --popover: #132f4c;
-  --popover-foreground: #e3f2fd;
-  --primary: #4fc3f7;
-  --primary-foreground: #0a1929;
-  --secondary: #1e4976;
-  --secondary-foreground: #81d4fa;
-  --muted: #1e4976;
-  --muted-foreground: #90caf9;
-  --accent: #4fc3f7;
-  --accent-foreground: #0a1929;
-  --destructive: #ef5350;
+  /* Radix UI Variables - Standard Light Theme */
+  --background: #ffffff;
+  --foreground: #212529;
+  --card: #ffffff;
+  --card-foreground: #212529;
+  --popover: #ffffff;
+  --popover-foreground: #212529;
+  --primary: #0d6efd;
+  --primary-foreground: #ffffff;
+  --secondary: #6c757d;
+  --secondary-foreground: #ffffff;
+  --muted: #f8f9fa;
+  --muted-foreground: #6c757d;
+  --accent: #0d6efd;
+  --accent-foreground: #ffffff;
+  --destructive: #dc3545;
   --destructive-foreground: #ffffff;
-  --border: rgba(79, 195, 247, 0.2);
-  --input: #132f4c;
-  --ring: #4fc3f7;
-  --chart-1: #4fc3f7;
-  --chart-2: #66bb6a;
-  --chart-3: #ffa726;
-  --chart-4: #ba68c8;
-  --chart-5: #ef5350;
-  --sidebar: #0a1929;
-  --sidebar-foreground: #e3f2fd;
-  --sidebar-primary: #4fc3f7;
-  --sidebar-primary-foreground: #0a1929;
-  --sidebar-accent: #1e4976;
-  --sidebar-accent-foreground: #81d4fa;
-  --sidebar-border: hsl(0, 0%, 88%);
-  --sidebar-ring: hsl(207, 90%, 54%);
+  --border: #dee2e6;
+  --input: #ffffff;
+  --ring: #0d6efd;
+  --chart-1: #0d6efd;
+  --chart-2: #198754;
+  --chart-3: #ffc107;
+  --chart-4: #6f42c1;
+  --chart-5: #dc3545;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #212529;
+  --sidebar-primary: #0d6efd;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #f8f9fa;
+  --sidebar-accent-foreground: #212529;
+  --sidebar-border: #dee2e6;
+  --sidebar-ring: #0d6efd;
   
-  /* Ocean Dark glass effects */
-  --glass-bg: rgba(30, 30, 30, 0.85);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-hover: rgba(30, 30, 30, 0.92);
+  /* Light glass effects */
+  --glass-bg: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-hover: rgba(255, 255, 255, 0.95);
   
   /* Material Design 2 pattern (subtle) */
   --pattern-dots: none; /* Material Design uses clean solid backgrounds */
