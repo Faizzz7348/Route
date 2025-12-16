@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { GripVertical, RotateCcw, X, CheckCheck, Columns3 } from "lucide-react";
+import { GripVertical, Columns3 } from "lucide-react";
 import { TableColumn } from "@shared/schema";
 
 interface ColumnCustomizationModalProps {
@@ -141,11 +141,11 @@ export function ColumnCustomizationModal({
           <DialogTitle className="text-lg font-semibold flex items-center gap-2 text-blue-600 dark:text-blue-400">
             <Columns3 className="w-6 h-6" />
             Customize Columns
-            <span className="text-sm text-muted-foreground font-normal">
+            <span className="text-sm text-muted-foreground font-normal dark:text-gray-400">
               ({visibleCount} of {localColumns.length} visible)
             </span>
           </DialogTitle>
-          <DialogDescription className="text-base text-slate-600 dark:text-slate-300">
+          <DialogDescription className="text-base text-slate-600 dark:text-gray-300">
             Toggle column visibility and drag to reorder them in your table.
           </DialogDescription>
         </DialogHeader>
@@ -183,7 +183,7 @@ export function ColumnCustomizationModal({
                             </div>
                             <Label
                               htmlFor={`column-${column.id}`}
-                              className="text-sm font-medium cursor-pointer text-slate-700 dark:text-slate-200"
+                              className="text-sm font-medium cursor-pointer text-slate-700 dark:text-gray-300"
                             >
                               {column.name}
                             </Label>
@@ -206,40 +206,36 @@ export function ColumnCustomizationModal({
           </DragDropContext>
 
           <div className="text-sm bg-blue-50/50 dark:bg-blue-950/30 p-3 rounded-lg border border-blue-200 dark:border-blue-800">
-            <strong className="text-blue-900 dark:text-blue-100">Tip:</strong> At least one column must remain visible. Core columns are recommended to stay visible for the best experience.
+            <strong className="text-blue-900 dark:text-gray-300">Tip:</strong>{" "}
+            <span className="text-blue-900 dark:text-gray-300">At least one column must remain visible. Core columns are recommended to stay visible for the best experience.</span>
           </div>
         </div>
 
         <DialogFooter className="flex justify-center">
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-center w-full">
             <Button
               variant="outline"
               onClick={handleReset}
               size="sm"
-              className="w-8 h-8 p-0"
               data-testid="button-reset-columns"
-              title="Reset columns"
             >
-              <RotateCcw className="w-4 h-4" />
+              Reset
             </Button>
             <Button
               variant="outline"
               onClick={() => onOpenChange(false)}
               size="sm"
-              className="w-8 h-8 p-0"
               data-testid="button-cancel-customize"
-              title="Cancel"
             >
-              <X className="w-4 h-4" />
+              Cancel
             </Button>
             <Button 
               onClick={handleApply} 
               size="sm" 
-              className={`w-8 h-8 p-0 transition-all duration-200 ${hasChanges() ? 'bg-transparent border border-border/50 text-green-500 hover:text-green-400 hover:bg-green-500/10' : 'bg-transparent border border-border/50 text-muted-foreground hover:text-foreground hover:bg-background/50'}`} 
-              data-testid="button-apply-customize" 
-              title="Apply changes"
+              className={`transition-all duration-200 ${hasChanges() ? 'bg-transparent border border-border/50 text-green-500 hover:text-green-400 hover:bg-green-500/10' : 'bg-transparent border border-border/50 text-muted-foreground hover:text-foreground hover:bg-background/50'}`} 
+              data-testid="button-apply-customize"
             >
-              <CheckCheck className="w-4 h-4" />
+              Apply
             </Button>
           </div>
         </DialogFooter>
