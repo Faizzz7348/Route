@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Calendar, Palette } from "lucide-react";
+import { Database, Settings, Save, DoorOpen, Rows, Receipt, Layout, Sun, Moon, Bookmark, Plus, ChevronDown, Menu, BookOpen, LayoutGrid, ListChecks, Calendar, Palette, Dock } from "lucide-react";
 import { useLocation } from "wouter";
 import { AddColumnModal } from "./add-column-modal";
 import {
@@ -28,9 +28,11 @@ interface NavigationProps {
   isAuthenticated?: boolean;
   theme?: string;
   onToggleTheme?: () => void;
+  showFloatingDock?: boolean;
+  onToggleFloatingDock?: () => void;
 }
 
-export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, onBulkColorEdit, isAuthenticated, theme, onToggleTheme }: NavigationProps) {
+export function Navigation({ editMode, onEditModeRequest, onShowCustomization, onAddRow, onSaveData, onGenerateTng, onAddColumn, onOptimizeRoute, onCalculateTolls, onSaveLayout, onSavedLinks, onShowTutorial, onBulkColorEdit, isAuthenticated, theme, onToggleTheme, showFloatingDock, onToggleFloatingDock }: NavigationProps) {
   const [currentTime, setCurrentTime] = useState(new Date());
   const [, navigate] = useLocation();
 
@@ -81,8 +83,26 @@ export function Navigation({ editMode, onEditModeRequest, onShowCustomization, o
             </div>
           </div>
 
-          {/* Navigation - Theme Toggle + Menu Button */}
+          {/* Navigation - Floating Dock Toggle + Theme Toggle + Menu Button */}
           <div className="flex items-center gap-2">
+            {/* Floating Dock Toggle Button - Only in Edit Mode */}
+            {editMode && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onToggleFloatingDock}
+                className="btn-glass w-8 h-8 p-0 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg hover:shadow-cyan-500/20 active:scale-95 active:shadow-none"
+                data-testid="button-toggle-floating-dock"
+                title={showFloatingDock ? 'Hide Floating Dock' : 'Show Floating Dock'}
+              >
+                <Dock className={`w-4 h-4 transition-all duration-300 ${
+                  showFloatingDock 
+                    ? 'text-cyan-500 dark:text-cyan-400' 
+                    : 'text-gray-400 dark:text-gray-500'
+                }`} />
+              </Button>
+            )}
+            
             {/* Theme Toggle Button */}
             <Button
               variant="outline"

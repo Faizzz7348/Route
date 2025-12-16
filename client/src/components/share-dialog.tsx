@@ -165,8 +165,8 @@ export function ShareDialog({ open, onOpenChange, tableState }: ShareDialogProps
           className="relative z-10"
           style={{ paddingTop: 'max(1.5rem, env(safe-area-inset-top))' }}
         >
-          <DialogTitle className="text-sm font-semibold">Share Table View</DialogTitle>
-          <DialogDescription className="text-sm">
+          <DialogTitle className="text-sm font-semibold text-slate-900 dark:text-slate-100">Share Table View</DialogTitle>
+          <DialogDescription className="text-sm text-slate-600 dark:text-slate-300">
             Create a shareable link for the current table state including filters, sorting, and visible columns.
           </DialogDescription>
         </DialogHeader>

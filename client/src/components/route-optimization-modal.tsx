@@ -149,7 +149,7 @@ export function RouteOptimizationModal({
             <Route className="w-6 h-6" />
             AI Route Optimization
           </DialogTitle>
-          <DialogDescription className="text-base">
+          <DialogDescription className="text-base text-slate-600 dark:text-slate-300">
             Optimize your delivery route to save time, fuel, and distance using advanced AI algorithms.
           </DialogDescription>
         </DialogHeader>
@@ -180,10 +180,10 @@ export function RouteOptimizationModal({
                   <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors" data-testid="radio-algorithm-nearest-neighbor">
                     <RadioGroupItem value="nearest_neighbor" id="nearest_neighbor" />
                     <div className="flex-1">
-                      <Label htmlFor="nearest_neighbor" className="font-medium cursor-pointer">
+                      <Label htmlFor="nearest_neighbor" className="font-medium cursor-pointer text-slate-700 dark:text-slate-200">
                         Nearest Neighbor (Recommended)
                       </Label>
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                         {getAlgorithmDescription('nearest_neighbor')}
                       </p>
                     </div>
@@ -192,10 +192,10 @@ export function RouteOptimizationModal({
                   <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors" data-testid="radio-algorithm-genetic">
                     <RadioGroupItem value="genetic" id="genetic" />
                     <div className="flex-1">
-                      <Label htmlFor="genetic" className="font-medium cursor-pointer">
+                      <Label htmlFor="genetic" className="font-medium cursor-pointer text-slate-700 dark:text-slate-200">
                         Genetic Algorithm (Advanced)
                       </Label>
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                         {getAlgorithmDescription('genetic')}
                       </p>
                     </div>
@@ -204,10 +204,10 @@ export function RouteOptimizationModal({
                   <div className="flex items-start space-x-3 p-3 rounded-lg border hover:bg-accent transition-colors" data-testid="radio-algorithm-simulated-annealing">
                     <RadioGroupItem value="simulated_annealing" id="simulated_annealing" />
                     <div className="flex-1">
-                      <Label htmlFor="simulated_annealing" className="font-medium cursor-pointer">
+                      <Label htmlFor="simulated_annealing" className="font-medium cursor-pointer text-slate-700 dark:text-slate-200">
                         Simulated Annealing
                       </Label>
-                      <p className="text-sm text-muted-foreground mt-1">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                         {getAlgorithmDescription('simulated_annealing')}
                       </p>
                     </div>
@@ -217,10 +217,10 @@ export function RouteOptimizationModal({
 
               <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg border">
                 <div className="flex-1">
-                  <Label htmlFor="prioritize-delivery" className="font-medium cursor-pointer">
+                  <Label htmlFor="prioritize-delivery" className="font-medium cursor-pointer text-slate-700 dark:text-slate-200">
                     Prioritize Delivery Grouping
                   </Label>
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
                     Group locations with the same delivery type together
                   </p>
                 </div>
@@ -326,11 +326,11 @@ export function RouteOptimizationModal({
             </div>
 
             <div className="bg-muted/30 p-4 rounded-lg border">
-              <h4 className="font-semibold mb-2 flex items-center gap-2">
+              <h4 className="font-semibold mb-2 flex items-center gap-2 text-slate-700 dark:text-slate-200">
                 <Zap className="w-4 h-4" />
                 Algorithm Used
               </h4>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
                 {optimizationResult.algorithm === 'nearest_neighbor' && 'Nearest Neighbor with 2-Opt optimization'}
                 {optimizationResult.algorithm === 'genetic' && 'Genetic Algorithm with population-based evolution'}
                 {optimizationResult.algorithm === 'simulated_annealing' && 'Simulated Annealing with probabilistic search'}

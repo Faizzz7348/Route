@@ -145,7 +145,7 @@ export function ColumnCustomizationModal({
               ({visibleCount} of {localColumns.length} visible)
             </span>
           </DialogTitle>
-          <DialogDescription className="text-base">
+          <DialogDescription className="text-base text-slate-600 dark:text-slate-300">
             Toggle column visibility and drag to reorder them in your table.
           </DialogDescription>
         </DialogHeader>
@@ -183,7 +183,7 @@ export function ColumnCustomizationModal({
                             </div>
                             <Label
                               htmlFor={`column-${column.id}`}
-                              className="text-sm font-medium cursor-pointer"
+                              className="text-sm font-medium cursor-pointer text-slate-700 dark:text-slate-200"
                             >
                               {column.name}
                             </Label>

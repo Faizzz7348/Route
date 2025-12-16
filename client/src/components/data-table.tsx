@@ -1718,7 +1718,7 @@ export function DataTable({
       </div>
       
       {/* Pagination Controls - Outside scrollable area */}
-      <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-border bg-white/70 dark:bg-black/70 backdrop-blur-2xl transition-smooth-fast">
+      <div className="flex flex-col items-center gap-2 px-4 py-2 border-t border-border bg-white/70 dark:bg-black/70 backdrop-blur-2xl transition-smooth-fast rounded-b-2xl">
         <div className="flex items-center gap-1.5">
           {/* Show First button only when currentPage > 3 (has 3+ pages before) */}
           {currentPage > 3 && (

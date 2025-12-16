@@ -11,9 +11,10 @@ import { FloatingDock } from "@/components/ui/floating-dock";
 
 interface FooterProps {
   editMode?: boolean;
+  showFloatingDock?: boolean;
 }
 
-export function Footer({ editMode = false }: FooterProps) {
+export function Footer({ editMode = false, showFloatingDock = true }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -133,37 +134,39 @@ export function Footer({ editMode = false }: FooterProps) {
       >
         <div className="container mx-auto">
           {/* Floating Dock */}
-          <div className="flex justify-center mb-4">
-            <FloatingDock
-              items={[
-                {
-                  title: "Home",
-                  icon: <Home className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-                  href: "/",
-                },
-                {
-                  title: "Tables",
-                  icon: <Table className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-                  href: "/",
-                },
-                {
-                  title: "Custom Tables",
-                  icon: <LayoutGrid className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-                  href: "/custom-tables",
-                },
-                {
-                  title: "Calendar",
-                  icon: <CalendarIcon className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-                  href: "/calendar",
-                },
-                {
-                  title: "Help",
-                  icon: <BookOpen className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
-                  href: "/help",
-                },
-              ]}
-            />
-          </div>
+          {showFloatingDock && (
+            <div className="flex justify-center mb-4">
+              <FloatingDock
+                items={[
+                  {
+                    title: "Home",
+                    icon: <Home className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                    href: "/",
+                  },
+                  {
+                    title: "Tables",
+                    icon: <Table className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                    href: "/",
+                  },
+                  {
+                    title: "Custom Tables",
+                    icon: <LayoutGrid className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                    href: "/custom-tables",
+                  },
+                  {
+                    title: "Calendar",
+                    icon: <CalendarIcon className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                    href: "/calendar",
+                  },
+                  {
+                    title: "Help",
+                    icon: <BookOpen className="h-full w-full text-neutral-500 dark:text-neutral-300" />,
+                    href: "/help",
+                  },
+                ]}
+              />
+            </div>
+          )}
           
           <div className={`flex items-center justify-center gap-2 transition-all duration-700 ease-out text-[11px] ${
             isLoaded ? 'scale-100 opacity-100' : 'scale-95 opacity-0'

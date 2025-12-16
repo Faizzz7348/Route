@@ -77,10 +77,23 @@ export default function TablePage() {
   const [showTutorial, setShowTutorial] = useState(false);
   const [bulkColorModalOpen, setBulkColorModalOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [showFloatingDock, setShowFloatingDock] = useState(() => {
+    const saved = localStorage.getItem('showFloatingDock');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
   const tableRef = useRef<HTMLDivElement>(null);
   const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { toast } = useToast();
   const { theme, toggleTheme} = useTheme();
+  
+  // Toggle floating dock
+  const toggleFloatingDock = () => {
+    setShowFloatingDock((prev: boolean) => {
+      const newValue = !prev;
+      localStorage.setItem('showFloatingDock', JSON.stringify(newValue));
+      return newValue;
+    });
+  };
   
   const {
     rows,
@@ -1061,6 +1074,8 @@ export default function TablePage() {
           isAuthenticated={true}
           theme={theme}
           onToggleTheme={toggleTheme}
+          showFloatingDock={showFloatingDock}
+          onToggleFloatingDock={toggleFloatingDock}
         />
       </div>
       <main className="pt-16 animate-in slide-in-from-bottom-4 fade-in duration-700 delay-150">
@@ -1759,7 +1774,7 @@ export default function TablePage() {
       </main>
       
       {/* Footer */}
-      <Footer editMode={editMode} />
+      <Footer editMode={editMode} showFloatingDock={showFloatingDock} />
     </>
   );
 }
