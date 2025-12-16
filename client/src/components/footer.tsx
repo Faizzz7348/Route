@@ -174,7 +174,7 @@ export function Footer({ editMode = false, showFloatingDock = true }: FooterProp
             <div className="text-gray-500 dark:text-gray-400 italic">
               Delivering Convenience
             </div>
-            <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+            <div className="w-1.5 h-1.5 bg-gray-400 dark:bg-gray-600 rounded-full"></div>
             <div className="text-gray-500 dark:text-gray-400 italic">
               One Route at a Time
             </div>

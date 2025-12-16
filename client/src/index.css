@@ -60,6 +60,44 @@ textarea {
 @tailwind components;
 @tailwind utilities;
 
+/* Global Theme Transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Disable transitions for specific elements */
+input, select, textarea, button:active {
+  transition: none;
+}
+
+/* Enhanced Focus States for Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  transition: outline 0.2s ease;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.dark button:focus-visible, .dark a:focus-visible {
+  outline-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(144, 202, 249, 0.2);
+}
+
+/* Improved Selection Colors */
+::selection {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.dark ::selection {
+  background-color: hsl(207, 79%, 76%);
+  color: hsl(0, 0%, 0%);
+}
+
 :root {
   /* ==========================================
      Standard Light Theme Colors
@@ -121,10 +159,13 @@ textarea {
   --sidebar-border: #dee2e6;
   --sidebar-ring: #0d6efd;
   
-  /* Light glass effects */
-  --glass-bg: rgba(255, 255, 255, 0.9);
-  --glass-border: rgba(0, 0, 0, 0.1);
+  /* Light glass effects - Enhanced */
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-bg-strong: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(0, 0, 0, 0.08);
   --glass-hover: rgba(255, 255, 255, 0.95);
+  --glass-blur: blur(20px);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   
   /* Material Design 2 pattern (subtle) */
   --pattern-dots: none; /* Material Design uses clean solid backgrounds */
@@ -201,6 +242,39 @@ textarea {
     @apply font-sans antialiased text-foreground h-full;
     font-family: 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: var(--background);
+  }
+  
+  /* Custom Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--muted);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 5px;
+    transition: background 0.2s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
+
+  .dark ::-webkit-scrollbar-track {
+    background: hsl(0, 0%, 8%);
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsl(0, 0%, 20%);
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
   }
   
   /* Material Design uses clean solid backgrounds */
@@ -1851,4 +1925,30 @@ a {
 a:hover {
   color: var(--ocean-bright);
   text-decoration: none;
+}
+
+/* Shimmer Animation for Skeleton Loaders */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Smooth Page Transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out;
 }

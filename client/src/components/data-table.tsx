@@ -135,10 +135,10 @@ function MobileTooltip({ content, children, showBelow = false }: MobileTooltipPr
       
       {isVisible && (
         <div className={`absolute left-1/2 transform -translate-x-1/2 z-50 ${showBelow ? 'top-full mt-1' : 'bottom-full mb-1'}`}>
-          <div className="px-2 py-1 text-xs bg-gray-900 text-white rounded shadow-lg whitespace-nowrap">
+          <div className="px-2 py-1 text-xs bg-gray-900 dark:bg-gray-700 text-white rounded shadow-lg whitespace-nowrap">
             {content}
           </div>
-          <div className={`absolute left-1/2 transform -translate-x-1/2 border-4 border-transparent ${showBelow ? 'bottom-full border-b-gray-900' : 'top-full border-t-gray-900'}`} />
+          <div className={`absolute left-1/2 transform -translate-x-1/2 border-4 border-transparent ${showBelow ? 'bottom-full border-b-gray-900 dark:border-b-gray-700' : 'top-full border-t-gray-900 dark:border-t-gray-700'}`} />
         </div>
       )}
     </div>

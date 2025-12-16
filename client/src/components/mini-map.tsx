@@ -186,11 +186,11 @@ function BackToCurrentButton({
         variant="outline"
         size="sm"
         onClick={handleBackToCurrent}
-        className="bg-white/95 hover:bg-white shadow-lg border-2 border-blue-500 hover:border-blue-600 backdrop-blur-sm"
+        className="bg-white/95 dark:bg-gray-900/95 hover:bg-white dark:hover:bg-gray-900 shadow-lg border-2 border-blue-500 hover:border-blue-600 dark:border-blue-400 dark:hover:border-blue-500 backdrop-blur-sm"
         data-testid="button-back-to-current"
         title="Back to current location"
       >
-        <Navigation className="w-4 h-4 text-blue-500" />
+        <Navigation className="w-4 h-4 text-blue-500 dark:text-blue-400" />
       </Button>
     </div>
   );
@@ -354,10 +354,10 @@ export const MiniMap = memo(function MiniMap({
               <Button
                 variant="outline"
                 size="sm"
-                className="bg-white/95 hover:bg-white shadow-lg border-2 border-gray-400 backdrop-blur-sm pointer-events-auto"
+                className="bg-white/95 dark:bg-gray-900/95 hover:bg-white dark:hover:bg-gray-900 shadow-lg border-2 border-gray-400 dark:border-gray-600 hover:border-gray-500 dark:hover:border-gray-500 backdrop-blur-sm pointer-events-auto"
                 data-testid="button-fullscreen-map"
               >
-                <Maximize2 className="w-4 h-4 text-black" />
+                <Maximize2 className="w-4 h-4 text-gray-900 dark:text-gray-100" />
               </Button>
             </DialogTrigger>
             <DialogContent 
