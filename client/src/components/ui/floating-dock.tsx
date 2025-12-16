@@ -41,31 +41,49 @@ const FloatingDockMobile = ({
         {open && (
           <motion.div
             layoutId="nav"
-            className="absolute bottom-full mb-2 inset-x-0 flex flex-col gap-2"
+            className="absolute bottom-full mb-3 inset-x-0 flex flex-col gap-3"
           >
             {items.map((item, idx) => (
               <motion.div
                 key={item.title}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 10, scale: 0.8 }}
                 animate={{
                   opacity: 1,
                   y: 0,
+                  scale: 1,
                 }}
                 exit={{
                   opacity: 0,
                   y: 10,
+                  scale: 0.8,
                   transition: {
                     delay: idx * 0.05,
                   },
                 }}
-                transition={{ delay: (items.length - 1 - idx) * 0.05 }}
+                transition={{ 
+                  delay: (items.length - 1 - idx) * 0.05,
+                  type: "spring",
+                  stiffness: 260,
+                  damping: 20
+                }}
               >
                 <a
                   href={item.href}
                   key={item.title}
-                  className="h-10 w-10 rounded-full bg-gray-50 dark:bg-neutral-900 flex items-center justify-center"
+                  className="group relative h-12 w-12 rounded-2xl bg-white/90 dark:bg-black/90 backdrop-blur-xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(255,255,255,0.05)] flex items-center justify-center transition-all duration-300 hover:scale-110 hover:shadow-[0_12px_40px_rgb(0,0,0,0.2)] hover:bg-gradient-to-br hover:from-blue-50 hover:to-cyan-50 dark:hover:from-blue-950/50 dark:hover:to-cyan-950/50 active:scale-95"
                 >
-                  <div className="h-4 w-4">{item.icon}</div>
+                  <div className="h-5 w-5 text-gray-700 dark:text-gray-300 transition-all duration-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 group-hover:scale-110">
+                    {item.icon}
+                  </div>
+                  {/* Tooltip */}
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 0, scale: 0.9 }}
+                    whileHover={{ opacity: 1, scale: 1 }}
+                    className="absolute right-full mr-2 px-3 py-1.5 whitespace-nowrap rounded-lg bg-white/95 dark:bg-black/95 backdrop-blur-xl border border-gray-200/60 dark:border-white/10 shadow-lg text-xs font-medium text-gray-700 dark:text-gray-300 pointer-events-none"
+                  >
+                    {item.title}
+                  </motion.div>
                 </a>
               </motion.div>
             ))}
@@ -74,9 +92,19 @@ const FloatingDockMobile = ({
       </AnimatePresence>
       <button
         onClick={() => setOpen(!open)}
-        className="h-10 w-10 rounded-full bg-gray-50 dark:bg-neutral-800 flex items-center justify-center"
+        className={cn(
+          "h-12 w-12 rounded-2xl flex items-center justify-center transition-all duration-300 shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(255,255,255,0.05)]",
+          open 
+            ? "bg-gradient-to-br from-blue-500 to-cyan-500 dark:from-blue-600 dark:to-cyan-600 scale-105 rotate-180" 
+            : "bg-white/90 dark:bg-black/90 backdrop-blur-xl border-2 border-gray-200/60 dark:border-white/10 hover:scale-105 hover:shadow-[0_12px_40px_rgb(0,0,0,0.2)]"
+        )}
       >
-        <IconLayoutNavbarCollapse className="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
+        <IconLayoutNavbarCollapse className={cn(
+          "h-5 w-5 transition-all duration-300",
+          open 
+            ? "text-white rotate-180" 
+            : "text-gray-700 dark:text-gray-300"
+        )} />
       </button>
     </div>
   );
@@ -95,7 +123,7 @@ const FloatingDockDesktop = ({
       onMouseMove={(e) => mouseX.set(e.pageX)}
       onMouseLeave={() => mouseX.set(Infinity)}
       className={cn(
-        "mx-auto hidden md:flex h-16 gap-4 items-end rounded-2xl bg-gray-50 dark:bg-neutral-900 px-4 pb-3",
+        "mx-auto hidden md:flex h-20 gap-6 items-end rounded-3xl bg-white/90 dark:bg-black/90 backdrop-blur-2xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_20px_60px_rgb(0,0,0,0.25)] dark:shadow-[0_20px_60px_rgb(255,255,255,0.1)] px-6 pb-4 transition-all duration-500",
         className
       )}
     >
@@ -166,7 +194,7 @@ function IconContainer({
         style={{ width, height }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="aspect-square rounded-full bg-gray-200 dark:bg-neutral-800 flex items-center justify-center relative"
+        className="aspect-square rounded-2xl bg-gradient-to-br from-white/95 to-gray-50/95 dark:from-neutral-800/95 dark:to-neutral-900/95 backdrop-blur-xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(255,255,255,0.05)] flex items-center justify-center relative transition-all duration-300 hover:shadow-[0_12px_40px_rgb(0,0,0,0.2)] hover:border-blue-400/60 dark:hover:border-blue-500/60 group"
       >
         <AnimatePresence>
           {hovered && (
@@ -174,7 +202,7 @@ function IconContainer({
               initial={{ opacity: 0, y: 10, x: "-50%" }}
               animate={{ opacity: 1, y: 0, x: "-50%" }}
               exit={{ opacity: 0, y: 2, x: "-50%" }}
-              className="px-2 py-0.5 whitespace-pre rounded-md bg-gray-100 border dark:bg-neutral-800 dark:border-neutral-900 dark:text-white border-gray-200 text-neutral-700 absolute left-1/2 -translate-x-1/2 -top-8 w-fit text-xs"
+              className="px-3 py-1.5 whitespace-pre rounded-xl bg-white/95 dark:bg-neutral-800/95 backdrop-blur-xl border-2 border-gray-200/60 dark:border-white/10 shadow-[0_8px_30px_rgb(0,0,0,0.15)] dark:shadow-[0_8px_30px_rgb(255,255,255,0.1)] text-gray-700 dark:text-gray-200 absolute left-1/2 -translate-x-1/2 -top-12 w-fit text-xs font-medium"
             >
               {title}
             </motion.div>
@@ -182,7 +210,7 @@ function IconContainer({
         </AnimatePresence>
         <motion.div
           style={{ width: widthIcon, height: heightIcon }}
-          className="flex items-center justify-center"
+          className="flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300"
         >
           {icon}
         </motion.div>

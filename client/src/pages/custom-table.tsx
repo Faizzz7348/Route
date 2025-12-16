@@ -35,6 +35,10 @@ export default function CustomTableView() {
   const [deliveryFilters, setDeliveryFilters] = useState<string[]>([]);
   const [routeFilters, setRouteFilters] = useState<string[]>([]);
   const [selectedRowForImage, setSelectedRowForImage] = useState<string | null>(null);
+  const [showFloatingDock, setShowFloatingDock] = useState(() => {
+    const saved = localStorage.getItem('showFloatingDock');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
   // Apply filters and column visibility
   const { filteredRows, displayColumns, deliveryOptions } = useMemo(() => {
@@ -329,7 +333,7 @@ export default function CustomTableView() {
         </div>
       </main>
 
-      <Footer editMode={false} />
+      <Footer editMode={false} showFloatingDock={showFloatingDock} />
     </>
   );
 }

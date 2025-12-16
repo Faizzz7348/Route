@@ -30,6 +30,10 @@ export default function SharedTablePage() {
   const [deliveryFilters, setDeliveryFilters] = useState<string[]>([]);
   const [routeFilters, setRouteFilters] = useState<string[]>([]); // Hidden but applied from shared state
   const [selectedRowForImage, setSelectedRowForImage] = useState<string | null>(null);
+  const [showFloatingDock, setShowFloatingDock] = useState(() => {
+    const saved = localStorage.getItem('showFloatingDock');
+    return saved !== null ? JSON.parse(saved) : true;
+  });
 
   // Initialize filters from shared state
   useEffect(() => {
@@ -345,7 +349,7 @@ export default function SharedTablePage() {
         </div>
       </main>
 
-      <Footer editMode={false} />
+      <Footer editMode={false} showFloatingDock={showFloatingDock} />
     </>
   );
 }
