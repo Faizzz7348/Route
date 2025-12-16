@@ -30,10 +30,9 @@ export default function CustomTableView() {
     enabled: !!customTable?.id,
   });
 
-  // Local state for interactive features (delivery filter ONLY - route filter hidden but still applied)
+  // Local state for interactive features
   const [searchTerm, setSearchTerm] = useState("");
   const [deliveryFilters, setDeliveryFilters] = useState<string[]>([]);
-  const [routeFilters, setRouteFilters] = useState<string[]>([]);
   const [selectedRowForImage, setSelectedRowForImage] = useState<string | null>(null);
   const [showFloatingDock, setShowFloatingDock] = useState(() => {
     const saved = localStorage.getItem('showFloatingDock');
@@ -144,11 +143,6 @@ export default function CustomTableView() {
       
       return 0;
     });
-    
-    // Apply route filters
-    if (routeFilters.length > 0) {
-      filtered = filtered.filter(row => routeFilters.includes(row.route));
-    }
 
     // Apply search filter
     if (searchTerm) {
@@ -183,7 +177,7 @@ export default function CustomTableView() {
       displayColumns: visibleCols,
       deliveryOptions: deliveries
     };
-  }, [rows, columns, searchTerm, deliveryFilters, routeFilters, columnOrder, visibleColumns]);
+  }, [rows, columns, searchTerm, deliveryFilters, columnOrder, visibleColumns]);
 
   // Calculate distances for kilometer column
   const rowsWithDistances = useMemo(() => {
@@ -202,7 +196,7 @@ export default function CustomTableView() {
     }
 
     // Check if any filters are active
-    const hasActiveFilters = searchTerm !== "" || routeFilters.length > 0 || deliveryFilters.length > 0;
+    const hasActiveFilters = searchTerm !== "" || deliveryFilters.length > 0;
 
     if (!hasActiveFilters) {
       // NO FILTERS: Calculate direct distance from QL Kitchen to each route
@@ -259,7 +253,7 @@ export default function CustomTableView() {
         return { ...row, kilometer: cumulativeDistance, segmentDistance };
       });
     }
-  }, [rows, filteredRows, searchTerm, routeFilters, deliveryFilters]);
+  }, [rows, filteredRows, searchTerm, deliveryFilters]);
 
   // Create read-only mutations (they work but don't persist)
   const readOnlyUpdateMutation = useMutation({
@@ -286,10 +280,8 @@ export default function CustomTableView() {
 
   const readOnlyReorderColumnsMutation = useMutation<TableColumn[], Error, string[]>({
     mutationFn: async (columnIds: string[]) => {
-      const reordered = columnIds
-        .map(id => columns.find(c => c.id === id))
-        .filter((c): c is TableColumn => c !== undefined);
-      return reordered;
+      console.log("Read-only mode: Column reorder not persisted", columnIds);
+      return columns;
     },
   });
 
