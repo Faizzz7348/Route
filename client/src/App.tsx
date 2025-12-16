@@ -1,6 +1,7 @@
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -13,6 +14,22 @@ import HelpPage from "@/pages/help";
 import NotFound from "@/pages/not-found";
 
 function Router() {
+  // Background refetch when app becomes visible
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!document.hidden) {
+        // Refetch data when user comes back to app
+        queryClient.refetchQueries({ 
+          queryKey: ['/api/table-rows'],
+          type: 'active'
+        });
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
+  }, []);
+
   return (
     <div className="min-h-screen pb-16 text-sm bg-white dark:bg-black">
       <Switch>
