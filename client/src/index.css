@@ -1949,30 +1949,7 @@ body {
 /* Ocean Alert Error */
 .alert-ocean-error {
   background: linear-gradient(135deg, #c62828, #ef5350);
-  border-left: 4px solid #ef5350);
-}
-
-/* Dark mode overrides for Ocean Theme */
-.dark {
-  --background: #0a1929;
-  --foreground: #e3f2fd;
-  --card: #132f4c;
-  --card-foreground: #e3f2fd;
-  --popover: #132f4c;
-  --popover-foreground: #e3f2fd;
-  --primary: #4fc3f7;
-  --primary-foreground: #0a1929;
-  --secondary: #1e4976;
-  --secondary-foreground: #81d4fa;
-  --muted: #1e4976;
-  --muted-foreground: #90caf9;
-  --accent: #4fc3f7;
-  --accent-foreground: #0a1929;
-  --destructive: #ef5350;
-  --destructive-foreground: #ffffff;
-  --border: rgba(79, 195, 247, 0.2);
-  --input: #132f4c;
-  --ring: #4fc3f7;
+  border-left: 4px solid #ef5350;
 }
 
 /* Ocean Link Styles */
