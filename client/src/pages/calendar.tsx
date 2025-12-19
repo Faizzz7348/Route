@@ -41,6 +41,45 @@ export default function CalendarPage() {
     const saved = localStorage.getItem('showFloatingDock');
     return saved !== null ? JSON.parse(saved) : true;
   });
+  
+  // Edit mode with persistence
+  const [editMode, setEditMode] = useState(() => {
+    const savedEditMode = localStorage.getItem('calendarEditMode');
+    const savedTimestamp = localStorage.getItem('calendarEditModeTimestamp');
+    
+    if (savedEditMode && savedTimestamp) {
+      const now = Date.now();
+      const timestamp = parseInt(savedTimestamp, 10);
+      const hoursSinceLastActivity = (now - timestamp) / (1000 * 60 * 60);
+      
+      // Reset edit mode if inactive for more than 2 hours
+      if (hoursSinceLastActivity > 2) {
+        localStorage.removeItem('calendarEditMode');
+        localStorage.removeItem('calendarEditModeTimestamp');
+        return false;
+      }
+      
+      return JSON.parse(savedEditMode);
+    }
+    
+    return false;
+  });
+  
+  // Update timestamp whenever user interacts in edit mode
+  useEffect(() => {
+    if (editMode) {
+      localStorage.setItem('calendarEditMode', JSON.stringify(true));
+      localStorage.setItem('calendarEditModeTimestamp', Date.now().toString());
+    } else {
+      localStorage.removeItem('calendarEditMode');
+      localStorage.removeItem('calendarEditModeTimestamp');
+    }
+  }, [editMode]);
+  
+  // Toggle edit mode
+  const toggleEditMode = () => {
+    setEditMode(prev => !prev);
+  };
 
   // Load events from localStorage on mount
   useEffect(() => {
@@ -82,6 +121,9 @@ export default function CalendarPage() {
   }, [events]);
 
   const handleDateClick = (info: any) => {
+    // Only allow adding events in edit mode
+    if (!editMode) return;
+    
     setSelectedEvent(null);
     setEventTitle("");
     setEventStart(info.dateStr + 'T09:00');
@@ -91,6 +133,9 @@ export default function CalendarPage() {
   };
 
   const handleEventClick = (info: any) => {
+    // Only allow editing events in edit mode
+    if (!editMode) return;
+    
     const event = events.find(e => e.id === info.event.id);
     if (event) {
       setSelectedEvent(event);
@@ -316,6 +361,31 @@ export default function CalendarPage() {
 
             {/* Navigation Buttons */}
             <div className="flex items-center gap-2">
+              {/* Edit Mode Toggle */}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={toggleEditMode}
+                className={`btn-glass w-auto px-3 h-8 pagination-button rounded-xl group transition-all duration-300 ease-out hover:scale-110 hover:shadow-lg active:scale-95 active:shadow-none ${
+                  editMode 
+                    ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-blue-400 hover:shadow-blue-500/30' 
+                    : 'hover:shadow-gray-500/20'
+                }`}
+                title={editMode ? 'Exit Edit Mode' : 'Enter Edit Mode'}
+              >
+                {editMode ? (
+                  <>
+                    <Edit className="w-4 h-4 mr-1" />
+                    <span className="text-xs font-medium">Exit Edit</span>
+                  </>
+                ) : (
+                  <>
+                    <Pencil className="w-4 h-4 mr-1" />
+                    <span className="text-xs font-medium">Edit</span>
+                  </>
+                )}
+              </Button>
+              
               {/* Theme Toggle Button */}
               <Button
                 variant="outline"
@@ -533,7 +603,7 @@ export default function CalendarPage() {
         </DialogContent>
       </Dialog>
 
-      <Footer editMode={false} showFloatingDock={showFloatingDock} />
+      <Footer editMode={editMode} showFloatingDock={showFloatingDock} />
     </>
   );
 }
