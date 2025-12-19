@@ -1115,7 +1115,7 @@ export function DataTable({
           </div>
         </div>
       )}
-      <div className="relative w-full overflow-auto max-h-[calc(100vh-320px)] border rounded-2xl">
+      <div className="relative w-full overflow-auto max-h-[calc(100vh-320px)] border">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full relative">
             <TableHeader className="table-header-glass sticky top-0 z-20 bg-white dark:bg-gray-950 border-b-2 border-yellow-400/30">
@@ -1290,7 +1290,7 @@ export function DataTable({
                               {visibleColumns.map((column) => (
                                 <TableCell
                                   key={column.id}
-                                  className="p-4 align-middle [&:has([role=checkbox])]:pr-0 px-3 py-3 table-cell-10px text-center text-[12px] bg-transparent text-foreground whitespace-nowrap font-normal table-zoom-in"
+                                  className="p-4 align-middle [&:has([role=checkbox])]:pr-0 px-3 py-2 table-cell-10px text-center text-[12px] bg-transparent text-foreground whitespace-nowrap font-normal table-zoom-in"
                                   style={{
                                     minWidth: "100px",
                                     ...(column.dataKey === "location" && {
@@ -1685,11 +1685,11 @@ export function DataTable({
               )}
             </Droppable>
             <tfoot>
-              <TableRow className="sticky bottom-0 z-10 shadow-[0_-2px_10px_rgba(0,0,0,0.1)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)]">
+              <TableRow className="sticky bottom-0 z-10">
                 {visibleColumns.map((column, index) => (
                   <TableCell
                     key={column.id}
-                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-border sticky bottom-0 bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap"
+                    className="px-3 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-t border-border sticky bottom-0 bg-white dark:bg-slate-900 whitespace-nowrap"
                     style={{
                       textAlign: "center",
                       fontSize: "10px",
