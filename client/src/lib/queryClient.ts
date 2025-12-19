@@ -74,8 +74,9 @@ export const queryClient = new QueryClient({
     queries: {
       queryFn: getQueryFn({ on401: "throw" }),
       refetchInterval: false,
-      refetchOnWindowFocus: true, // Refetch when user returns to tab
+      refetchOnWindowFocus: false, // Disable auto-refetch to prevent race conditions
       refetchOnReconnect: true, // Refetch when internet reconnects
+      refetchOnMount: false, // Don't refetch when component mounts
       staleTime: 5 * 60 * 1000, // 5 minutes default
       gcTime: 30 * 60 * 1000, // 30 minutes garbage collection (increased)
       retry: 2, // Retry twice on failure
@@ -83,8 +84,7 @@ export const queryClient = new QueryClient({
       networkMode: 'online', // Only fetch when online
     },
     mutations: {
-      retry: 1, // Retry mutations once
-      retryDelay: 1000,
+      retry: 0, // Don't retry mutations to avoid double-save
       networkMode: 'online',
     },
   },

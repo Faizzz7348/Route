@@ -362,7 +362,7 @@ export function DataTable({
     if (page === currentPage) return;
     setCurrentPage(Math.max(1, Math.min(page, totalPages)));
   };
-  const handleDragEnd = (result: any) => {
+  const handleDragEnd = async (result: any) => {
     // Quick exit if no destination or no movement
     if (!result.destination) return;
     if (result.destination.index === result.source.index) return;
@@ -375,7 +375,9 @@ export function DataTable({
       newColumnOrder.splice(destination.index, 0, reorderedColumn);
 
       const columnIds = newColumnOrder.map((col) => col.id);
-      onReorderColumns.mutate(columnIds);
+      
+      // Wait for mutation to complete before UI update
+      await onReorderColumns.mutateAsync(columnIds);
     } else if (type === "row") {
       // IMPORTANT: Use the ACTUAL visible rows (paginatedRows) for drag & drop
       // This ensures we're reordering based on what user sees, not the full dataset
@@ -396,10 +398,8 @@ export function DataTable({
         newFullOrder[pageStartIndex + idx] = id;
       });
 
-      // Use requestAnimationFrame for smoother UI updates
-      requestAnimationFrame(() => {
-        onReorderRows.mutate(newFullOrder);
-      });
+      // Wait for mutation to complete before UI update
+      await onReorderRows.mutateAsync(newFullOrder);
     }
   };
 
@@ -1351,8 +1351,8 @@ export function DataTable({
                                         qrCode={row.qrCode || undefined}
                                         no={row.no}
                                         markerColor={row.markerColor || undefined}
-                                        onUpdateRow={(updates) =>
-                                          onUpdateRow.mutate({
+                                        onUpdateRow={async (updates) =>
+                                          await onUpdateRow.mutateAsync({
                                             id: row.id,
                                             updates,
                                           })
@@ -1371,8 +1371,8 @@ export function DataTable({
                                         type="select"
                                         options={deliveryOptions}
                                         dataKey={column.dataKey}
-                                        onSave={(value) =>
-                                          onUpdateRow.mutate({
+                                        onSave={async (value) =>
+                                          await onUpdateRow.mutateAsync({
                                             id: row.id,
                                             updates: {
                                               [column.dataKey]: value,
@@ -1392,8 +1392,8 @@ export function DataTable({
                                         type="select"
                                         options={routeOptions}
                                         dataKey={column.dataKey}
-                                        onSave={(value) =>
-                                          onUpdateRow.mutate({
+                                        onSave={async (value) =>
+                                          await onUpdateRow.mutateAsync({
                                             id: row.id,
                                             updates: {
                                               [column.dataKey]: value,
@@ -1415,8 +1415,8 @@ export function DataTable({
                                       value={String(row.no || 0)}
                                       type="number"
                                       dataKey={column.dataKey}
-                                      onSave={(value) =>
-                                        onUpdateRow.mutate({
+                                      onSave={async (value) =>
+                                        await onUpdateRow.mutateAsync({
                                           id: row.id,
                                           updates: { no: parseInt(value) || 0 },
                                         })
@@ -1429,8 +1429,8 @@ export function DataTable({
                                       type={column.type}
                                       options={column.options || undefined}
                                       dataKey={column.dataKey}
-                                      onSave={(value) =>
-                                        onUpdateRow.mutate({
+                                      onSave={async (value) =>
+                                        await onUpdateRow.mutateAsync({
                                           id: row.id,
                                           updates: { [column.dataKey]: value },
                                         })
@@ -1552,8 +1552,8 @@ export function DataTable({
                                       qrCode={row.qrCode || undefined}
                                       no={row.no}
                                       markerColor={row.markerColor || undefined}
-                                      onUpdateRow={(updates) =>
-                                        onUpdateRow.mutate({
+                                      onUpdateRow={async (updates) =>
+                                        await onUpdateRow.mutateAsync({
                                           id: row.id,
                                           updates,
                                         })
@@ -1565,9 +1565,9 @@ export function DataTable({
                                     {editMode ? (
                                       <Select
                                         value={row.deliveryAlt || "normal"}
-                                        onValueChange={(value) => {
+                                        onValueChange={async (value) => {
                                           const nextActive = value !== "inactive";
-                                          onUpdateRow.mutate({
+                                          await onUpdateRow.mutateAsync({
                                             id: row.id,
                                             updates: { deliveryAlt: value, active: nextActive },
                                           });

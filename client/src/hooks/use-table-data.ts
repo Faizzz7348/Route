@@ -37,102 +37,34 @@ export function useTableData() {
     },
   });
 
-  // Update row mutation with optimistic updates
+  // Update row mutation
   const updateRow = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<InsertTableRow> }) => {
       const response = await apiRequest("PATCH", `/api/table-rows/${id}`, updates);
       return response.json();
     },
-    onMutate: async ({ id, updates }) => {
-      // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ["/api/table-rows"] });
-      
-      // Snapshot previous value
-      const previousRows = queryClient.getQueryData<TableRow[]>(["/api/table-rows"]);
-      
-      // Optimistically update cache
-      if (previousRows) {
-        queryClient.setQueryData<TableRow[]>(
-          ["/api/table-rows"],
-          previousRows.map(row => row.id === id ? { ...row, ...updates } as TableRow : row)
-        );
-      }
-      
-      return { previousRows };
-    },
-    onError: (err, variables, context) => {
-      // Rollback on error
-      if (context?.previousRows) {
-        queryClient.setQueryData(["/api/table-rows"], context.previousRows);
-      }
-    },
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
-  // Delete row mutation with optimistic update
+  // Delete row mutation
   const deleteRow = useMutation({
     mutationFn: async (id: string) => {
       await apiRequest("DELETE", `/api/table-rows/${id}`);
     },
-    onMutate: async (id) => {
-      await queryClient.cancelQueries({ queryKey: ["/api/table-rows"] });
-      const previousRows = queryClient.getQueryData<TableRow[]>(["/api/table-rows"]);
-      
-      // Optimistically remove row
-      if (previousRows) {
-        queryClient.setQueryData<TableRow[]>(
-          ["/api/table-rows"],
-          previousRows.filter(row => row.id !== id)
-        );
-      }
-      
-      return { previousRows };
-    },
-    onError: (err, variables, context) => {
-      if (context?.previousRows) {
-        queryClient.setQueryData(["/api/table-rows"], context.previousRows);
-      }
-    },
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
-  // Reorder rows mutation with optimistic updates
+  // Reorder rows mutation
   const reorderRows = useMutation({
     mutationFn: async (rowIds: string[]) => {
       const response = await apiRequest("POST", "/api/table-rows/reorder", { rowIds });
       return response.json();
     },
-    onMutate: async (rowIds) => {
-      await queryClient.cancelQueries({ queryKey: ["/api/table-rows"] });
-      const previousRows = queryClient.getQueryData<TableRow[]>(["/api/table-rows"]);
-      
-      // Optimistically reorder rows
-      if (previousRows) {
-        const rowMap = new Map(previousRows.map(row => [row.id, row]));
-        const reordered = rowIds.map((id, index) => {
-          const row = rowMap.get(id);
-          return row ? { ...row, sortOrder: index } : null;
-        }).filter((row): row is TableRow => row !== null);
-        
-        // Add any rows not in rowIds at the end
-        const includedIds = new Set(rowIds);
-        const remaining = previousRows.filter(row => !includedIds.has(row.id));
-        
-        queryClient.setQueryData<TableRow[]>(["/api/table-rows"], [...reordered, ...remaining]);
-      }
-      
-      return { previousRows };
-    },
-    onError: (err, variables, context) => {
-      if (context?.previousRows) {
-        queryClient.setQueryData(["/api/table-rows"], context.previousRows);
-      }
-    },
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
     },
   });
