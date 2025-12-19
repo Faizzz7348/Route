@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useTableData } from "@/hooks/use-table-data";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
-import { DataTable as OriginalDataTable } from "@/components/data-table";
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+import { DataTable } from "@/components/data-table";
 import { AddImageSection } from "@/components/add-image-section";
 import { ImageEditSection } from "@/components/image-edit-section";
 import { ColumnCustomizationModal } from "@/components/column-customization-modal";
@@ -1528,30 +1526,7 @@ export default function TablePage() {
 
       {/* Main Table */}
       <div ref={tableRef} className="animate-in fade-in slide-in-from-bottom-3 duration-700 delay-500">
-        {/* PrimeReact Virtual Scroll Table with Frozen Row */}
-        <div className="card p-4 mb-4">
-          <DataTable 
-            value={rowsWithDistances} 
-            scrollable 
-            scrollHeight="400px" 
-            virtualScrollerOptions={{ itemSize: 46 }} 
-            tableStyle={{ minWidth: '50rem' }}
-            loading={exitingEditMode}
-            frozenValue={rowsWithDistances.filter(row => row.location === "QL Kitchen")}
-          >
-            {displayColumns.map((column) => (
-              <Column 
-                key={column.id}
-                field={column.dataKey}
-                header={column.name}
-                style={{ minWidth: '150px' }}
-              />
-            ))}
-          </DataTable>
-        </div>
-
-        {/* Original DataTable Component */}
-        <OriginalDataTable
+        <DataTable
           rows={rowsWithDistances}
           columns={displayColumns}
           editMode={editMode}
