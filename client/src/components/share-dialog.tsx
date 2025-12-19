@@ -94,8 +94,8 @@ export function ShareDialog({ open, onOpenChange, tableState }: ShareDialogProps
 
       setIsSaved(true);
       
-      // Invalidate saved links query to auto-refresh the list
-      queryClient.invalidateQueries({ queryKey: ["/api/saved-share-links"] });
+      // Invalidate and refetch saved links query to auto-refresh the list
+      await queryClient.refetchQueries({ queryKey: ["/api/saved-share-links"] });
       
       toast({
         title: "Link saved!",

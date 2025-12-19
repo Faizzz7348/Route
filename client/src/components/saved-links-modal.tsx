@@ -58,8 +58,8 @@ export function SavedLinksModal({ open, onOpenChange }: SavedLinksModalProps) {
       }
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/saved-share-links"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/saved-share-links"] });
       setDeleteDialogOpen(false);
       setSelectedLink(null);
       toast({
@@ -86,8 +86,8 @@ export function SavedLinksModal({ open, onOpenChange }: SavedLinksModalProps) {
       }
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/saved-share-links"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/saved-share-links"] });
       setEditDialogOpen(false);
       setSelectedLink(null);
       setRemark("");

@@ -22,7 +22,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
     setEditValue(value);
   }, [value]);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     let processedValue = editValue;
     
     if (type === 'number') {
@@ -32,7 +32,7 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
       processedValue = processedValue.toFixed(2);
     }
     
-    onSave(processedValue);
+    await onSave(processedValue);
     setIsOpen(false);
   };
 
@@ -76,9 +76,9 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             </div>
             <Select 
               value={editValue || ''} 
-              onValueChange={(newValue) => {
+              onValueChange={async (newValue) => {
                 setEditValue(newValue);
-                onSave(newValue);
+                await onSave(newValue);
                 setIsOpen(false);
               }}
             >
@@ -174,9 +174,9 @@ export function EditableCell({ value, type, onSave, options, dataKey }: Editable
             </div>
             <Select 
               value={editValue || ''} 
-              onValueChange={(newValue) => {
+              onValueChange={async (newValue) => {
                 setEditValue(newValue);
-                onSave(newValue);
+                await onSave(newValue);
                 setIsOpen(false);
               }}
             >

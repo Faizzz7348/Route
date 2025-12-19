@@ -32,8 +32,8 @@ export function useTableData() {
       const response = await apiRequest("POST", "/api/table-rows", data);
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
@@ -43,8 +43,8 @@ export function useTableData() {
       const response = await apiRequest("PATCH", `/api/table-rows/${id}`, updates);
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
@@ -53,8 +53,8 @@ export function useTableData() {
     mutationFn: async (id: string) => {
       await apiRequest("DELETE", `/api/table-rows/${id}`);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
@@ -64,8 +64,8 @@ export function useTableData() {
       const response = await apiRequest("POST", "/api/table-rows/reorder", { rowIds });
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
@@ -75,8 +75,8 @@ export function useTableData() {
       const response = await apiRequest("POST", "/api/table-columns", data);
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-columns"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"] });
     },
   });
 
@@ -85,8 +85,8 @@ export function useTableData() {
     mutationFn: async (id: string) => {
       await apiRequest("DELETE", `/api/table-columns/${id}`);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-columns"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"] });
     },
   });
 
@@ -96,8 +96,8 @@ export function useTableData() {
       const response = await apiRequest("POST", "/api/table-columns/reorder", { columnIds });
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-columns"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"] });
     },
   });
 
@@ -107,8 +107,8 @@ export function useTableData() {
       const response = await apiRequest("POST", `/api/table-rows/${rowId}/images`, { imageUrl, caption });
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
@@ -118,8 +118,8 @@ export function useTableData() {
       const response = await apiRequest("PATCH", `/api/table-rows/${rowId}/images/${imageIndex}`, { imageUrl, caption });
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
@@ -132,8 +132,8 @@ export function useTableData() {
       const response = await apiRequest("DELETE", url);
       return response.json();
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/table-rows"] });
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
     },
   });
 
