@@ -486,7 +486,7 @@ export default function CalendarPage() {
                   setShowEventsPopover(true);
                 }
                 
-                return 'popover';
+                // Prevent FullCalendar's default popover - return void
               }}
               height="auto"
               eventMouseEnter={(info) => {
