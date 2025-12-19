@@ -468,7 +468,26 @@ export default function CalendarPage() {
               selectMirror={true}
               dayMaxEvents={2}
               dayMaxEventRows={2}
-              moreLinkText={(num) => `+${num} more`}
+              moreLinkText={(num) => `${num}+ events`}
+              moreLinkClick={(info) => {
+                // Get the date and events for that date
+                const dateStr = info.date.toISOString().split('T')[0];
+                const eventsOnDate = events.filter(event => {
+                  const eventDate = new Date(event.start).toISOString().split('T')[0];
+                  return eventDate === dateStr;
+                });
+                
+                if (eventsOnDate.length > 0) {
+                  setSelectedDateEvents(eventsOnDate);
+                  setSelectedDateInfo({
+                    day: info.date.toLocaleDateString('en-US', { weekday: 'long' }),
+                    date: info.date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+                  });
+                  setShowEventsPopover(true);
+                }
+                
+                return 'popover';
+              }}
               height="auto"
               eventMouseEnter={(info) => {
                 if (!editMode) {
@@ -679,36 +698,16 @@ export default function CalendarPage() {
               selectedDateEvents.map((event) => (
                 <div
                   key={event.id}
-                  className="flex items-start gap-3 p-4 rounded-xl bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-white/10 hover:bg-white/70 dark:hover:bg-black/70 transition-all"
+                  className="flex items-center gap-3 p-3 rounded-lg bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-white/10 hover:bg-white/70 dark:hover:bg-black/70 transition-all"
                 >
-                  <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex-shrink-0">
-                    <Clock className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex-shrink-0">
+                    <Clock className="w-4 h-4 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <h4 className="font-semibold text-[#28282B] dark:text-[#E5E4E2] truncate">
-                        {event.title}
-                      </h4>
-                      {editMode && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 flex-shrink-0"
-                          onClick={() => {
-                            setShowEventsPopover(false);
-                            setSelectedEvent(event);
-                            setEventTitle(event.title);
-                            setEventStart(event.start);
-                            setEventEnd(event.end || '');
-                            setEventDescription(event.description || '');
-                            setShowEventDialog(true);
-                          }}
-                        >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1 text-sm text-[#28282B]/70 dark:text-[#E5E4E2]/70 mt-1">
+                    <h4 className="font-semibold text-[#28282B] dark:text-[#E5E4E2] truncate text-sm">
+                      {event.title}
+                    </h4>
+                    <div className="flex items-center gap-1 text-xs text-[#28282B]/70 dark:text-[#E5E4E2]/70 mt-0.5">
                       <span className="font-medium">
                         {new Date(event.start).toLocaleTimeString('en-US', { 
                           hour: '2-digit', 
@@ -729,11 +728,6 @@ export default function CalendarPage() {
                         </>
                       )}
                     </div>
-                    {event.description && (
-                      <p className="text-sm text-[#28282B]/60 dark:text-[#E5E4E2]/60 mt-2 line-clamp-2">
-                        {event.description}
-                      </p>
-                    )}
                   </div>
                 </div>
               ))
