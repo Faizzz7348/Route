@@ -11,7 +11,7 @@ export function useTableData() {
     isLoading: rowsLoading,
   } = useQuery<TableRow[]>({
     queryKey: ["/api/table-rows"],
-    staleTime: 3 * 60 * 1000, // 3 minutes (reduced for fresh data)
+    staleTime: 0, // Always fresh to ensure immediate UI updates
     gcTime: 15 * 60 * 1000, // 15 minutes
   });
 
@@ -33,7 +33,7 @@ export function useTableData() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"], type: 'active' });
     },
   });
 
@@ -44,7 +44,7 @@ export function useTableData() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"], type: 'active' });
     },
   });
 
@@ -54,7 +54,7 @@ export function useTableData() {
       await apiRequest("DELETE", `/api/table-rows/${id}`);
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"], type: 'active' });
     },
   });
 
@@ -65,7 +65,7 @@ export function useTableData() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"], type: 'active' });
     },
   });
 
@@ -76,7 +76,7 @@ export function useTableData() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"], type: 'active' });
     },
   });
 
@@ -86,7 +86,7 @@ export function useTableData() {
       await apiRequest("DELETE", `/api/table-columns/${id}`);
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"], type: 'active' });
     },
   });
 
@@ -97,7 +97,7 @@ export function useTableData() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-columns"], type: 'active' });
     },
   });
 
@@ -108,7 +108,7 @@ export function useTableData() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"], type: 'active' });
     },
   });
 
@@ -119,7 +119,7 @@ export function useTableData() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"], type: 'active' });
     },
   });
 
@@ -133,7 +133,7 @@ export function useTableData() {
       return response.json();
     },
     onSuccess: async () => {
-      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"] });
+      await queryClient.refetchQueries({ queryKey: ["/api/table-rows"], type: 'active' });
     },
   });
 
