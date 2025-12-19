@@ -131,25 +131,6 @@ export default function CalendarPage() {
   }, [events]);
 
   const handleDateClick = (info: any) => {
-    // Check if there are events on this date
-    const dateStr = info.dateStr;
-    const eventsOnDate = events.filter(event => {
-      const eventDate = new Date(event.start).toISOString().split('T')[0];
-      return eventDate === dateStr;
-    });
-
-    // If there are multiple events and not in edit mode, show popover
-    if (eventsOnDate.length > 0 && !editMode) {
-      const date = new Date(dateStr);
-      setSelectedDateEvents(eventsOnDate);
-      setSelectedDateInfo({
-        day: date.toLocaleDateString('en-US', { weekday: 'long' }),
-        date: date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-      });
-      setShowEventsPopover(true);
-      return;
-    }
-    
     // Only allow adding events in edit mode
     if (!editMode) return;
     
