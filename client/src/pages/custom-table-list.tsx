@@ -13,7 +13,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Plus, Share2, Trash2, Copy, Check, ArrowLeft, Edit, Sun, Moon } from "lucide-react";
+import { Plus, Share2, Trash2, Copy, Check, ArrowLeft, Edit, Sun, Moon, MoreVertical } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import type { TableRow, CustomTable } from "@shared/schema";
 import { Footer } from "@/components/footer";
 import { LoadingOverlay } from "@/components/skeleton-loader";
@@ -368,7 +374,7 @@ export default function CustomTableList() {
             <table className="w-full min-w-[600px]">
               <thead className="bg-gradient-to-r from-slate-200 to-slate-300 dark:from-slate-800/50 dark:to-slate-900/50 sticky top-0 z-10">
                 <tr className="border-b-2 border-gray-300 dark:border-white/10">
-                  <th className="px-4 py-2 text-left text-xs font-semibold whitespace-nowrap">
+                  <th className="px-4 py-2 text-center text-xs font-semibold whitespace-nowrap">
                     <Checkbox
                       checked={selectedRows.size === filteredRows.length && filteredRows.length > 0}
                       onCheckedChange={(checked) => {
@@ -380,17 +386,16 @@ export default function CustomTableList() {
                       }}
                     />
                   </th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold whitespace-nowrap">No</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold whitespace-nowrap">Route</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold whitespace-nowrap">Code</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold whitespace-nowrap">Location</th>
-                  <th className="px-4 py-2 text-left text-xs font-semibold whitespace-nowrap">Delivery</th>
+                  <th className="px-4 py-2 text-center text-xs font-semibold whitespace-nowrap">Route</th>
+                  <th className="px-4 py-2 text-center text-xs font-semibold whitespace-nowrap">Code</th>
+                  <th className="px-4 py-2 text-center text-xs font-semibold whitespace-nowrap">Location</th>
+                  <th className="px-4 py-2 text-center text-xs font-semibold whitespace-nowrap">Delivery</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredRows.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="px-4 py-12 text-center text-gray-600 dark:text-gray-400">
+                    <td colSpan={5} className="px-4 py-12 text-center text-gray-600 dark:text-gray-400">
                       {searchTerm ? "No locations found matching your search" : "No locations available"}
                     </td>
                   </tr>
@@ -405,28 +410,25 @@ export default function CustomTableList() {
                         }`}
                         onClick={() => toggleRowSelection(row.id)}
                       >
-                        <td className="px-4 py-2">
+                        <td className="px-4 py-2 text-center">
                           <Checkbox
                             checked={isSelected}
                             onCheckedChange={() => toggleRowSelection(row.id)}
                             onClick={(e) => e.stopPropagation()}
                           />
                         </td>
-                        <td className={`px-4 py-2 text-xs font-medium whitespace-nowrap ${isSelected ? "font-semibold" : ""}`}>
-                          {row.no}
-                        </td>
-                        <td className="px-4 py-2 text-xs whitespace-nowrap">
+                        <td className="px-4 py-2 text-xs whitespace-nowrap text-center">
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
                             {row.route}
                           </span>
                         </td>
-                        <td className={`px-4 py-2 text-xs whitespace-nowrap ${isSelected ? "font-semibold" : ""}`}>
+                        <td className={`px-4 py-2 text-xs whitespace-nowrap text-center ${isSelected ? "font-semibold" : ""}`}>
                           {row.code}
                         </td>
-                        <td className={`px-4 py-2 text-xs font-semibold max-w-[300px] truncate ${isSelected ? "font-bold" : ""}`} title={row.location}>
+                        <td className={`px-4 py-2 text-xs font-semibold max-w-[300px] truncate text-center ${isSelected ? "font-bold" : ""}`} title={row.location}>
                           {row.location}
                         </td>
-                        <td className="px-4 py-2 text-xs whitespace-nowrap">
+                        <td className="px-4 py-2 text-xs whitespace-nowrap text-center">
                           <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-medium ${
                             row.delivery === 'Daily' 
                               ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300'
@@ -479,45 +481,39 @@ export default function CustomTableList() {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <Button
-                      onClick={() => copyShareLink(table)}
-                      size="sm"
-                      variant="outline"
-                      className="bg-transparent border-transparent hover:bg-blue-500/10"
-                      title="Copy share link"
-                    >
-                      {copiedId === table.id ? (
-                        <Check className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <Share2 className="h-4 w-4" />
-                      )}
-                    </Button>
-                    <Button
-                      onClick={() => window.open(`/custom/${table.shareId}`, "_blank")}
-                      size="sm"
-                      variant="outline"
-                      className="bg-transparent border-transparent hover:bg-blue-500/10"
-                    >
-                      View
-                    </Button>
-                    <Button
-                      onClick={() => handleEditTable(table)}
-                      size="sm"
-                      variant="outline"
-                      className="bg-transparent border-transparent hover:bg-green-500/10 text-green-600"
-                      title="Edit locations"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      onClick={() => deleteTableMutation.mutate(table.id)}
-                      size="sm"
-                      variant="outline"
-                      className="bg-transparent border-transparent hover:bg-red-500/10 text-red-500"
-                      title="Delete table"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="bg-transparent border-transparent hover:bg-gray-500/10 w-8 h-8 p-0"
+                        >
+                          <MoreVertical className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-40">
+                        <DropdownMenuItem onClick={() => copyShareLink(table)}>
+                          {copiedId === table.id ? (
+                            <Check className="h-4 w-4 mr-2 text-green-500" />
+                          ) : (
+                            <Share2 className="h-4 w-4 mr-2" />
+                          )}
+                          <span>Share</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => window.open(`/custom/${table.shareId}`, "_blank")}>
+                          <Copy className="h-4 w-4 mr-2" />
+                          <span>View</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEditTable(table)}>
+                          <Edit className="h-4 w-4 mr-2 text-green-600" />
+                          <span>Edit</span>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => deleteTableMutation.mutate(table.id)} className="text-red-500">
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          <span>Delete</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               ))}
