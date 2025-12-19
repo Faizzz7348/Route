@@ -466,8 +466,8 @@ export default function CalendarPage() {
               editable={editMode}
               selectable={true}
               selectMirror={true}
-              dayMaxEvents={2}
-              dayMaxEventRows={2}
+              dayMaxEvents={1}
+              dayMaxEventRows={1}
               moreLinkText={(num) => `${num}+ events`}
               moreLinkClick={(info) => {
                 // Get the date and events for that date
@@ -488,6 +488,12 @@ export default function CalendarPage() {
                 
                 // Prevent FullCalendar's default popover - return void
               }}
+              eventTimeFormat={{
+                hour: 'numeric',
+                minute: '2-digit',
+                meridiem: false
+              }}
+              displayEventTime={false}
               height="auto"
               eventMouseEnter={(info) => {
                 if (!editMode) {
