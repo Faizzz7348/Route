@@ -1318,12 +1318,8 @@ export function DataTable({
                                   }
                                 })()
                               } hover:bg-blue-100/60 dark:hover:bg-gray-800/80 table-cell-unique-transition ${
-                                snapshot.isDragging ? "drag-elevate shadow-2xl scale-105 bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-400 dark:border-blue-600 z-50" : ""
+                                snapshot.isDragging ? "drag-elevate" : ""
                               }`}
-                              style={{
-                                ...provided.draggableProps.style,
-                                transition: snapshot.isDragging ? 'all 0.2s cubic-bezier(0.2, 0, 0, 1)' : 'all 0.15s ease',
-                              }}
                               data-testid={`table-row-${row.id}`}
                             >
                               {visibleColumns.map((column) => (
@@ -1410,8 +1406,6 @@ export function DataTable({
                                         type="select"
                                         options={deliveryOptions}
                                         dataKey={column.dataKey}
-                                        editMode={editMode}
-                                        autoSave={true}
                                         onSave={async (value) =>
                                           await onUpdateRow.mutateAsync({
                                             id: row.id,
@@ -1433,8 +1427,6 @@ export function DataTable({
                                         type="select"
                                         options={routeOptions}
                                         dataKey={column.dataKey}
-                                        editMode={editMode}
-                                        autoSave={true}
                                         onSave={async (value) =>
                                           await onUpdateRow.mutateAsync({
                                             id: row.id,
@@ -1458,8 +1450,6 @@ export function DataTable({
                                       value={String(row.no || 0)}
                                       type="number"
                                       dataKey={column.dataKey}
-                                      editMode={editMode}
-                                      autoSave={true}
                                       onSave={async (value) =>
                                         await onUpdateRow.mutateAsync({
                                           id: row.id,
@@ -1474,8 +1464,6 @@ export function DataTable({
                                       type={column.type}
                                       options={column.options || undefined}
                                       dataKey={column.dataKey}
-                                      editMode={editMode}
-                                      autoSave={true}
                                       onSave={async (value) =>
                                         await onUpdateRow.mutateAsync({
                                           id: row.id,
@@ -1516,15 +1504,13 @@ export function DataTable({
                                   <div className="flex items-center gap-3">
                                     <div
                                       {...provided.dragHandleProps}
-                                      className={`p-2 rounded-lg ${
-                                        snapshot.isDragging 
-                                          ? "cursor-grabbing bg-blue-100 dark:bg-blue-900/50 shadow-md" 
-                                          : "cursor-grab hover:bg-blue-50 dark:hover:bg-blue-900/20"
-                                      } text-gray-400 dark:text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-200`}
-                                      title="Drag to reorder"
+                                      className={`p-2 rounded ${
+                                        snapshot.isDragging ? "cursor-grabbing" : editMode ? "cursor-grab" : "cursor-default"
+                                      } text-gray-500 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-all`}
+                                      title={editMode ? "Drag to reorder" : ""}
                                       data-testid={`drag-handle-${row.id}`}
                                     >
-                                      <GripVertical className={`w-4 h-4 ${snapshot.isDragging ? 'scale-110' : ''} transition-transform`} />
+                                      <GripVertical className="w-4 h-4" />
                                     </div>
                                     <div className="flex items-center gap-3 opacity-60 group-hover:opacity-100 transition-opacity">
                                     {editMode && (

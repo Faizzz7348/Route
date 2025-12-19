@@ -2,52 +2,40 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Check, X, Pencil } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Check, X } from "lucide-react";
 
 interface EditableCellProps {
   value: any;
   type: string;
   onSave: (value: any) => void;
-  onCancel?: () => void;
-  onChange?: (value: any) => void;
   options?: string[];
   dataKey?: string;
-  autoSave?: boolean;
-  editMode?: boolean;
 }
 
-export function EditableCell({ 
-  value, 
-  type, 
-  onSave, 
-  onCancel,
-  onChange,
-  options, 
-  dataKey,
-  autoSave = true,
-  editMode = false
-}: EditableCellProps) {
-  const [isEditing, setIsEditing] = useState(false);
+export function EditableCell({ value, type, onSave, options, dataKey }: EditableCellProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const [editValue, setEditValue] = useState(value);
   const [isSaving, setIsSaving] = useState(false);
-  const [showHover, setShowHover] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const selectRef = useRef<HTMLSelectElement>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    if (!isSaving && !isEditing) {
+    // Only update editValue when not currently saving
+    if (!isSaving) {
       setEditValue(value);
     }
-  }, [value, isSaving, isEditing]);
+  }, [value, isSaving]);
 
-  // Auto-focus when editing starts
+  // Reset isSaving when popover closes
   useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus();
-      inputRef.current.select();
+    if (!isOpen) {
+      setIsSaving(false);
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
     }
-  }, [isEditing]);
+  }, [isOpen]);
 
   // Cleanup on unmount
   useEffect(() => {
@@ -59,10 +47,7 @@ export function EditableCell({
   }, []);
 
   const handleSave = useCallback(async () => {
-    if (isSaving || editValue === value) {
-      setIsEditing(false);
-      return;
-    }
+    if (isSaving) return; // Prevent double saves
     
     setIsSaving(true);
     let processedValue = editValue;
@@ -76,38 +61,22 @@ export function EditableCell({
     
     try {
       await onSave(processedValue);
-      setIsEditing(false);
+      setIsOpen(false);
     } catch (error) {
       console.error('Save error:', error);
     } finally {
       setIsSaving(false);
     }
-  }, [editValue, value, type, onSave, isSaving]);
+  }, [editValue, type, onSave, isSaving]);
 
   const handleCancel = useCallback(() => {
     setEditValue(value);
-    setIsEditing(false);
+    setIsOpen(false);
     setIsSaving(false);
-    onCancel?.();
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
     }
-  }, [value, onCancel]);
-
-  const handleChange = useCallback((newValue: any) => {
-    setEditValue(newValue);
-    onChange?.(newValue);
-    
-    // Auto-save after 1 second of no changes
-    if (autoSave && editMode) {
-      if (saveTimeoutRef.current) {
-        clearTimeout(saveTimeoutRef.current);
-      }
-      saveTimeoutRef.current = setTimeout(() => {
-        handleSave();
-      }, 1000);
-    }
-  }, [onChange, autoSave, editMode, handleSave]);
+  }, [value]);
 
   const getPlaceholder = () => {
     if (dataKey === 'latitude') {
@@ -125,144 +94,209 @@ export function EditableCell({
     return "Enter value";
   };
 
-  // For select types (route, delivery, or generic select)
-  if (((['route', 'delivery'].includes(dataKey || '') || type === 'select') && options && options.length > 0)) {
-    if (isEditing) {
-      return (
-        <div className="flex items-center gap-1 min-w-[120px]">
-          <select
-            ref={selectRef as any}
-            value={editValue || ''}
-            onChange={(e) => {
-              const newValue = e.target.value;
-              setEditValue(newValue);
-              if (autoSave) {
-                handleChange(newValue);
-              }
-            }}
-            onBlur={handleSave}
+  // For route and delivery - use select with popover
+  if (['route', 'delivery'].includes(dataKey || '') && options && options.length > 0) {
+    return (
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <span
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded-lg px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            data-testid="text-editable-cell"
+          >
+            {value || <span className="text-gray-400">—</span>}
+          </span>
+        </PopoverTrigger>
+        <PopoverContent className="w-56 p-3" align="center">
+          <div className="space-y-3">
+            <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+              Select {dataKey}
+            </div>
+            <Select 
+              value={editValue || ''} 
+              onValueChange={async (newValue) => {
+                setIsSaving(true);
+                setEditValue(newValue);
+                try {
+                  await onSave(newValue);
+                  setIsOpen(false);
+                } finally {
+                  setIsSaving(false);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full h-9 text-sm">
+                <SelectValue placeholder={`Select ${dataKey}`} />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
+  // For code, location - use popover with input
+  if (['code', 'location'].includes(dataKey || '')) {
+    return (
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <span
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded-lg px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            data-testid="text-editable-cell"
+          >
+            {value || <span className="text-gray-400">—</span>}
+          </span>
+        </PopoverTrigger>
+        <PopoverContent className="w-56 p-3" align="center">
+          <div className="space-y-3">
+            <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+              Edit {dataKey}
+            </div>
+            <Input
+              value={editValue || ''}
+              onChange={(e) => setEditValue(e.target.value)}
+              placeholder={getPlaceholder()}
+              className="w-full h-9 text-sm"
+              autoFocus
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSave();
+                } else if (e.key === 'Escape') {
+                  handleCancel();
+                }
+              }}
+            />
+            <div className="flex gap-2 justify-end">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={handleCancel}
+                className="h-7 px-3 text-xs"
+              >
+                <X className="w-3 h-3 mr-1" />
+                Cancel
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleSave}
+                className="h-7 px-3 text-xs bg-blue-600 hover:bg-blue-700"
+              >
+                <Check className="w-3 h-3 mr-1" />
+                Save
+              </Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
+  // For select type
+  if (type === 'select' && options) {
+    return (
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <PopoverTrigger asChild>
+          <span
+            className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded-lg px-2 py-1 transition-all inline-block min-w-[60px] text-center"
+            data-testid="text-editable-cell"
+          >
+            {value || <span className="text-gray-400">—</span>}
+          </span>
+        </PopoverTrigger>
+        <PopoverContent className="w-56 p-3" align="center">
+          <div className="space-y-3">
+            <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+              Select {dataKey}
+            </div>
+            <Select 
+              value={editValue || ''} 
+              onValueChange={async (newValue) => {
+                setIsSaving(true);
+                setEditValue(newValue);
+                try {
+                  await onSave(newValue);
+                  setIsOpen(false);
+                } finally {
+                  setIsSaving(false);
+                }
+              }}
+            >
+              <SelectTrigger className="w-full h-9 text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {options.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    {option}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  }
+
+  // For other fields - use popover with input
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <span
+          className="cursor-pointer hover:bg-blue-500/10 hover:border hover:border-blue-500/30 rounded-lg px-2 py-1 transition-all inline-block min-w-[40px] text-center"
+          data-testid="text-editable-cell"
+        >
+          {value || <span className="text-gray-400">—</span>}
+        </span>
+      </PopoverTrigger>
+      <PopoverContent className="w-56 p-3" align="center">
+        <div className="space-y-3">
+          <div className="text-xs font-semibold text-gray-600 dark:text-gray-400">
+            Edit {dataKey || 'Value'}
+          </div>
+          <Input
+            type={type === 'number' || type === 'currency' ? 'number' : 'text'}
+            step={type === 'currency' ? '0.01' : undefined}
+            value={type === 'currency' ? editValue.toString().replace(/[^0-9.]/g, '') : editValue || ''}
+            onChange={(e) => setEditValue(e.target.value)}
+            placeholder={getPlaceholder()}
+            className="w-full h-9 text-sm"
+            autoFocus
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
-                e.preventDefault();
                 handleSave();
               } else if (e.key === 'Escape') {
-                e.preventDefault();
                 handleCancel();
               }
             }}
-            className="flex-1 h-7 px-2 text-xs border border-blue-500 rounded bg-blue-50 dark:bg-blue-950/30 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            disabled={isSaving}
-          >
-            <option value="">Select {dataKey}</option>
-            {options.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-          {!autoSave && (
-            <>
-              <button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="p-1 text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-950/30 rounded transition-colors"
-                title="Save"
-              >
-                <Check className="w-3 h-3" />
-              </button>
-              <button
-                onClick={handleCancel}
-                disabled={isSaving}
-                className="p-1 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 rounded transition-colors"
-                title="Cancel"
-              >
-                <X className="w-3 h-3" />
-              </button>
-            </>
-          )}
-        </div>
-      );
-    }
-
-    return (
-      <div 
-        className="group relative px-2 py-1 min-w-[60px] text-center cursor-pointer hover:bg-blue-500/10 rounded transition-all"
-        onDoubleClick={() => editMode && setIsEditing(true)}
-        onMouseEnter={() => setShowHover(true)}
-        onMouseLeave={() => setShowHover(false)}
-      >
-        <span className="text-xs">
-          {value || <span className="text-gray-400">—</span>}
-        </span>
-        {showHover && editMode && (
-          <Pencil className="absolute right-1 top-1/2 -translate-y-1/2 w-3 h-3 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-        )}
-      </div>
-    );
-  }
-
-  // For text/number/currency inputs - inline editing
-  if (isEditing) {
-    return (
-      <div className="flex items-center gap-1 min-w-[80px]">
-        <input
-          ref={inputRef}
-          type={type === 'number' || type === 'currency' ? 'number' : 'text'}
-          step={type === 'currency' ? '0.01' : undefined}
-          value={type === 'currency' ? editValue.toString().replace(/[^0-9.]/g, '') : editValue || ''}
-          onChange={(e) => handleChange(e.target.value)}
-          onBlur={handleSave}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              handleSave();
-            } else if (e.key === 'Escape') {
-              e.preventDefault();
-              handleCancel();
-            }
-          }}
-          placeholder={getPlaceholder()}
-          className="flex-1 h-7 px-2 text-xs border border-blue-500 rounded bg-blue-50 dark:bg-blue-950/30 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          disabled={isSaving}
-        />
-        {!autoSave && (
-          <>
-            <button
-              onClick={handleSave}
-              disabled={isSaving}
-              className="p-1 text-green-600 hover:text-green-700 hover:bg-green-50 dark:hover:bg-green-950/30 rounded transition-colors"
-              title="Save"
-            >
-              <Check className="w-3 h-3" />
-            </button>
-            <button
+          />
+          <div className="flex gap-2 justify-end">
+            <Button
+              size="sm"
+              variant="outline"
               onClick={handleCancel}
-              disabled={isSaving}
-              className="p-1 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/30 rounded transition-colors"
-              title="Cancel"
+              className="h-7 px-3 text-xs"
             >
-              <X className="w-3 h-3" />
-            </button>
-          </>
-        )}
-      </div>
-    );
-  }
-
-  // Display mode
-  return (
-    <div 
-      className="group relative px-2 py-1 min-w-[40px] text-center cursor-pointer hover:bg-blue-500/10 rounded transition-all"
-      onDoubleClick={() => editMode && setIsEditing(true)}
-      onMouseEnter={() => setShowHover(true)}
-      onMouseLeave={() => setShowHover(false)}
-    >
-      <span className="text-xs">
-        {type === 'currency' && value ? `RM ${parseFloat(value).toFixed(2)}` : (value || <span className="text-gray-400">—</span>)}
-      </span>
-      {showHover && editMode && (
-        <Pencil className="absolute right-1 top-1/2 -translate-y-1/2 w-3 h-3 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-      )}
-    </div>
+              <X className="w-3 h-3 mr-1" />
+              Cancel
+            </Button>
+            <Button
+              size="sm"
+              onClick={handleSave}
+              className="h-7 px-3 text-xs bg-blue-600 hover:bg-blue-700"
+            >
+              <Check className="w-3 h-3 mr-1" />
+              Save
+            </Button>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
