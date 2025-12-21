@@ -1153,7 +1153,7 @@ export function DataTable({
       <div className="relative w-full overflow-auto max-h-[calc(100vh-320px)] border">
         <DragDropContext onDragEnd={handleDragEnd}>
           <Table className="min-w-full relative">
-            <TableHeader className="table-header-glass sticky top-0 z-20 bg-white dark:bg-gray-950 border-b-2 border-yellow-400/30">
+            <TableHeader className="table-header-glass sticky top-0 z-30 bg-white dark:bg-gray-950 border-b-2 border-yellow-400/30">
               <Droppable
                 droppableId="columns"
                 direction="horizontal"
@@ -1174,11 +1174,13 @@ export function DataTable({
                           <TableHead
                             ref={provided.innerRef}
                             {...provided.draggableProps}
-                            className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide border-b border-border sticky top-0 bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap"
+                            className="px-4 py-3 text-center table-header-footer-12px font-medium text-blue-700 dark:text-blue-300 tracking-wide border-b border-border bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap"
                             style={{
                               textAlign: "center",
                               textDecoration: "normal",
                               fontSize: "10px",
+                              position: "sticky",
+                              top: 0,
                               ...(column.dataKey === "location" && {
                                 minWidth: `${120 + 15}px`,
                               }),
@@ -1198,11 +1200,13 @@ export function DataTable({
                       </Draggable>
                     ))}
                     <TableHead
-                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-border sticky top-0 bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap"
+                      className="px-4 py-3 text-center table-header-footer-12px font-semibold tracking-wide border-b border-border bg-white dark:bg-slate-900 shadow-sm whitespace-nowrap"
                       style={{
                         textAlign: "center",
                         textDecoration: "normal",
                         fontSize: "10px",
+                        position: "sticky",
+                        top: 0,
                       }}
                     >
                       <span className="bg-gradient-to-r from-red-600 to-rose-600 dark:from-red-400 dark:to-rose-400 bg-clip-text text-transparent">
